@@ -3,10 +3,48 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#514663',
+    },
+    secondary: {
+      main: '#7698B3',
+    },
+    background: {
+      default: '#fffef2',
+    },
+  },
+  typography: {
+    fontFamily: ['Bellota Text', 'cursive'].join(','),
+    h2: {
+      fontWeight: 'bold',
+      fontSize: '3.3rem',
+    },
+    h3: {
+      fontWeight: 'bold',
+      fontSize: '2.8rem',
+      marginBottom: 15,
+    },
+    h4: {
+      fontWeight: 'bold',
+      fontSize: '1.5rem',
+      marginBottom: 3,
+      marginTop: 3,
+    },
+    h5: {
+      fontSize: '1.2rem',
+    },
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme = {theme}>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
