@@ -14,6 +14,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import CheckIcon from '@material-ui/icons/Check';
 import Box from '@material-ui/core/Box';
 
 const columns = [
@@ -59,12 +60,22 @@ const useStyles = makeStyles({
   },
 });
 
+const useRowStyles = makeStyles({
+  root: {
+    '& > *': {
+      borderBottom: 'unset',
+    },
+  },
+});
+
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  const classes = useRowStyles();
+
   return (
     <React.Fragment>
-    <TableRow tabIndex={-1} key={row.i}>
+    <TableRow tabIndex={-1} key={row.i} >
       <TableCell>
         <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
           {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -84,16 +95,19 @@ function Row(props) {
         </IconButton>
       </TableCell>
     </TableRow>
-    <TableRow>
+    <TableRow className={classes.root}>
       <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={2}> 
         <Collapse in={open} timeout="auto" unmountOnExit>
           <Box marginLeft={16} margin={1}>
             <Table size="small" aria-label="purchases">
               <TableBody>
-                {row.options.map((options) => (
-                  <TableRow key={options}>
+                {row.options.map((option) => (
+                  <TableRow key={option}>
                     <TableCell component="th" scope="row">
-                      {options}
+                      {option}
+                    </TableCell>
+                    <TableCell align="right" component="th" scope="row">
+                      {row.answer==option && <CheckIcon/>}
                     </TableCell>
                   </TableRow>
                 ))}

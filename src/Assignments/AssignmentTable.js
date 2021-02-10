@@ -55,7 +55,7 @@ function Row(props) {
   const [open, setOpen] = React.useState(false);
   return (
     <React.Fragment>
-    <TableRow tabIndex={-1} key={row.i}>
+    <TableRow hover role="checkbox" tabIndex={-1} key={row.i}>
       <TableCell>{row.name}</TableCell>
       <TableCell align="right">{row.i}</TableCell>
       <TableCell align="right">
