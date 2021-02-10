@@ -1,10 +1,9 @@
 import React from 'react';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import Box from '@material-ui/core/Box';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: theme.spacing(3),

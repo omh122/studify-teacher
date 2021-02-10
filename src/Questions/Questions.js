@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import QuestionTable from './QuestionTable';
 import Grid from '@material-ui/core/Grid';
 import SearchBar from '../Components/SearchBar';
 import Filter from '../Components/Filter';
-import IconButton from '@material-ui/core/IconButton';
+import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import QuestionPopup from './QuestionPopup';
 
 const useStyles = makeStyles((theme) => ({
   paddedItem: {
@@ -17,14 +18,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 function Questions() {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
 
   function setFilterViews() {
     //todo
   }
 
-  function handleClickOpen() {
-    //todo
-  }
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div>
@@ -40,14 +45,23 @@ function Questions() {
             <Filter parentCallback={setFilterViews} />
             </Grid>
             <Grid item xs={1}>
-            <IconButton aria-label="add" onClick={handleClickOpen}>
-              <AddIcon fontSize="large"/>
-            </IconButton>
+            <Fab color="#6F9283" aria-label="add" onClick={handleClickOpen}>
+              <AddIcon />
+            </Fab>
             </Grid>
             <Grid item xs={12}>
             <QuestionTable />
             </Grid>
         </Grid>
+
+        {open && (
+        <QuestionPopup
+          //callback
+          parentCallback={handleClose}
+          type="add"
+        />
+      )}
+
     </div>
   );
 }

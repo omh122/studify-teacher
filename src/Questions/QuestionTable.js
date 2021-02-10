@@ -16,6 +16,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CheckIcon from '@material-ui/icons/Check';
 import Box from '@material-ui/core/Box';
+import QuestionPopup from './QuestionPopup';
 
 const columns = [
   { id: 'expand_icon', label: ' ' },
@@ -71,6 +72,15 @@ const useRowStyles = makeStyles({
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpenEdit(true);
+  };
+  const handleClose = () => {
+    setOpenEdit(false);
+  };
+
   const classes = useRowStyles();
 
   return (
@@ -85,10 +95,18 @@ function Row(props) {
       <TableCell align="right">{row.category}</TableCell>
       <TableCell align="right">{row.difficulty}</TableCell>
       <TableCell align="right">
-        <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+        <IconButton aria-label="expand row" size="small" onClick={handleClickOpen}>
           <EditIcon />
         </IconButton>
       </TableCell>
+      {openEdit && (
+        <QuestionPopup
+          //callback
+          parentCallback={handleClose}
+          type="edit"
+          row={row}
+        />
+      )}
       <TableCell align="right">
         <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
           <DeleteIcon />
@@ -107,7 +125,7 @@ function Row(props) {
                       {option}
                     </TableCell>
                     <TableCell align="right" component="th" scope="row">
-                      {row.answer==option && <CheckIcon/>}
+                      {row.answer===option && <CheckIcon/>}
                     </TableCell>
                   </TableRow>
                 ))}

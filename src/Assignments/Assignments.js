@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import AssignmentTable from './AssignmentTable';
 import Grid from '@material-ui/core/Grid';
 import SearchBar from '../Components/SearchBar';
-import IconButton from '@material-ui/core/IconButton';
+import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,9 +35,9 @@ function Questions() {
             
             </Grid>
             <Grid item xs={1}>
-            <IconButton aria-label="add" onClick={handleClickOpen}>
-              <AddIcon fontSize="large"/>
-            </IconButton>
+            <Fab color="#C78283" aria-label="add">
+              <AddIcon />
+            </Fab>
             </Grid>
             <Grid item xs={12}>
             <AssignmentTable />
