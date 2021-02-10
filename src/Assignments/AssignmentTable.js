@@ -8,41 +8,32 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import Collapse from '@material-ui/core/Collapse';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Box from '@material-ui/core/Box';
+import ShareIcon from '@material-ui/icons/Share';
 
 const columns = [
-  { id: 'expand_icon', label: ' ' },
-  { id: 'question', label: 'Question', minWidth: 200 },
+  { id: 'name', label: 'Assignment', minWidth: 200 },
   {
-    id: 'category',
-    label: 'Category',
-    minWidth: 100,
-    align: 'right',
-  },
-  {
-    id: 'difficulty',
-    label: 'Difficulty',
+    id: 'id',
+    label: 'Code',
     minWidth: 100,
     align: 'right',
   },
   { id: 'edit_icon', label: ' ' },
   { id: 'delete_icon', label: ' ' },
+  { id: 'share_icon', label: ' ' },
 ];
 
 const test_data = [
-  [0, 'What is the name of this course?', 'Introduction', 'Easy', ['CZ3001', 'CZ3002', 'CZ3003', 'CZ3004'], 'CZ3003'],
-  [1, 'What is the name of this game?', 'Introduction', 'Medium', ['Studify', 'Study Game', 'Minesweeper', 'Poker'], 'Studify'],
-  [2, 'What is the name of the course coordinatpr?', 'Introduction', 'Hard', ['Chuan Bin', 'Gang Zhe', 'Xiaoqing', 'Min Hui'], 'Xiaoqing'],
+  [0, 'Assignment 1', [0, 1, 2]],
+  [1, 'Assignment 2', [0, 1, 2]],
+  [2, 'Assignment 3', [0, 1, 2]],
 ];
 
-function createData(i, question, category, difficulty, options, answer) {
-  return { i, question, category, difficulty, options, answer };
+function createData(i, name, questions) {
+  return { i, name, questions };
 }
 
 const rows = []
@@ -65,14 +56,8 @@ function Row(props) {
   return (
     <React.Fragment>
     <TableRow tabIndex={-1} key={row.i}>
-      <TableCell>
-        <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-          {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-        </IconButton>
-      </TableCell>
-      <TableCell>{row.question}</TableCell>
-      <TableCell align="right">{row.category}</TableCell>
-      <TableCell align="right">{row.difficulty}</TableCell>
+      <TableCell>{row.name}</TableCell>
+      <TableCell align="right">{row.i}</TableCell>
       <TableCell align="right">
         <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
           <EditIcon />
@@ -83,24 +68,10 @@ function Row(props) {
           <DeleteIcon />
         </IconButton>
       </TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={2}> 
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <Box marginLeft={16} margin={1}>
-            <Table size="small" aria-label="purchases">
-              <TableBody>
-                {row.options.map((options) => (
-                  <TableRow key={options}>
-                    <TableCell component="th" scope="row">
-                      {options}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>  
-          </Box>
-        </Collapse>
+      <TableCell align="right">
+        <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+          <ShareIcon />
+        </IconButton>
       </TableCell>
     </TableRow>
     </React.Fragment>
@@ -132,7 +103,7 @@ export default function StickyHeadTable() {
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth,
-                           backgroundColor: '#6F9283',
+                           backgroundColor: '#C78283',
                            color: "#fff"      
                          }}
                 >

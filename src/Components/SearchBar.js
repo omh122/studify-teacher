@@ -40,7 +40,7 @@ export default function SearchBar(props) {
         <Grid item xs={11}>
           <TextField
             id="search-bar"
-            label="Search Questions..."
+            label="Search..."
             fullWidth
             variant="outlined"
             color="secondary"

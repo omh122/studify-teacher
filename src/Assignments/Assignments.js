@@ -1,10 +1,9 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import QuestionTable from './QuestionTable';
+import AssignmentTable from './AssignmentTable';
 import Grid from '@material-ui/core/Grid';
 import SearchBar from '../Components/SearchBar';
-import Filter from '../Components/Filter';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -18,10 +17,6 @@ const useStyles = makeStyles((theme) => ({
 function Questions() {
   const classes = useStyles();
 
-  function setFilterViews() {
-    //todo
-  }
-
   function handleClickOpen() {
     //todo
   }
@@ -29,7 +24,7 @@ function Questions() {
   return (
     <div>
         <Typography  className={classes.paddedItem} variant="h3">
-          Question Bank
+          Assignments
         </Typography>
         
         <Grid container spacing={2} className={classes.paddedItem} alignItems="center" justify="center">
@@ -37,7 +32,7 @@ function Questions() {
             <SearchBar />
             </Grid>
             <Grid item xs={7}>
-            <Filter parentCallback={setFilterViews} />
+            
             </Grid>
             <Grid item xs={1}>
             <IconButton aria-label="add" onClick={handleClickOpen}>
@@ -45,7 +40,7 @@ function Questions() {
             </IconButton>
             </Grid>
             <Grid item xs={12}>
-            <QuestionTable />
+            <AssignmentTable />
             </Grid>
         </Grid>
     </div>

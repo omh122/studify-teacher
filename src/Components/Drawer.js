@@ -21,6 +21,9 @@ import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 
 import Home from '../Home/Home';
 import Questions from '../Questions/Questions';
+import Assignments from '../Assignments/Assignments';
+import Results from '../Results/Results';
+import Resources from '../Resources/Resources';
 
 const drawerWidth = 240;
 
@@ -110,12 +113,16 @@ export default function PersistentDrawerRight() {
         },
         {
             text:"Results",
-            route:"/studentresults"
+            route:"/studentresults/campaignresults"
         },
         {
             text:"Students",
             route:"/studentdata"
         },
+        {
+          text:"Resources",
+          route:"/teachingmaterials"
+      },
 
     ];
   const classes = useStyles();
@@ -181,9 +188,10 @@ export default function PersistentDrawerRight() {
         <Switch>
             <Route exact path="/" component={Home}/>
             <Route path="/questionbank" component={Questions}/>
-            <Route path="/assignments" component={Home}/>
-            <Route path="/studentresults" component={Home}/>
+            <Route path="/assignments" component={Assignments}/>
+            <Route path="/studentresults/:resultsTab" component={Results}/>
             <Route path="/studentdata" component={Home}/>
+            <Route path="/teachingmaterials" component={Resources}/>
         </Switch>
     
       </main>
