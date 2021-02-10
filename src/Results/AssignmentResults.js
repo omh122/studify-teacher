@@ -1,4 +1,5 @@
 import React from 'react';
+import Graph from './Graph';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 // create animations https://www.youtube.com/watch?v=JcHLxzrsRS4 
@@ -14,6 +15,7 @@ function Home() {
         <Typography  className={classes.paddedItem} paragraph>
           This is a assignment results page
         </Typography>
+        <Graph />
     </div>
   );
 }
