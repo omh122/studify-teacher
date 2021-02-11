@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -17,6 +17,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CheckIcon from '@material-ui/icons/Check';
 import Box from '@material-ui/core/Box';
 import QuestionPopup from './QuestionPopup';
+import ConfirmationDialog from '../Components/ConfirmationDialog';
+
 
 const columns = [
   { id: 'expand_icon', label: ' ' },
@@ -71,14 +73,27 @@ const useRowStyles = makeStyles({
 
 function Row(props) {
   const { row } = props;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
-  const [openEdit, setOpenEdit] = React.useState(false);
-  const handleClickOpen = () => {
+  //edit dialog actions
+  const [openEdit, setOpenEdit] = useState(false);
+  const handleClickEdit = () => {
     setOpenEdit(true);
   };
-  const handleClose = () => {
+  const handleCloseEdit = () => {
     setOpenEdit(false);
+  };
+
+  //delete dialog actions
+  const [openDelete, setOpenDelete] = useState(false);
+  const handleClickDelete = () => {
+    setOpenDelete(true);
+  };
+  const handleDialogResult = (continueAction) => {
+    setOpenDelete(false);
+    if (continueAction) {
+        //complete action
+    }
   };
 
   const classes = useRowStyles();
@@ -95,23 +110,31 @@ function Row(props) {
       <TableCell align="right">{row.category}</TableCell>
       <TableCell align="right">{row.difficulty}</TableCell>
       <TableCell align="right">
-        <IconButton aria-label="expand row" size="small" onClick={handleClickOpen}>
+        <IconButton aria-label="expand row" size="small" onClick={handleClickEdit}>
           <EditIcon />
         </IconButton>
       </TableCell>
       {openEdit && (
         <QuestionPopup
           //callback
-          parentCallback={handleClose}
+          parentCallback={handleCloseEdit}
           type="edit"
           row={row}
         />
       )}
       <TableCell align="right">
-        <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+        <IconButton aria-label="expand row" size="small" onClick={handleClickDelete}>
           <DeleteIcon />
         </IconButton>
       </TableCell>
+      {openDelete && (
+        <ConfirmationDialog
+          //callback
+          title={"Delete Question"}
+          content={"Confirm deletion of this question? This action cannot be undone."}
+          parentCallback={handleDialogResult}
+        />
+      )}
     </TableRow>
     <TableRow className={classes.root}>
       <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={2}> 
@@ -139,7 +162,7 @@ function Row(props) {
   )
 };
 
-export default function StickyHeadTable() {
+export default function QuestionTable() {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);

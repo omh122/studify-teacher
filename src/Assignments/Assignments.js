@@ -28,10 +28,10 @@ function Questions() {
         </Typography>
         
         <Grid container spacing={2} className={classes.paddedItem} alignItems="center" justify="center">
-            <Grid item xs={4}>
+            <Grid item xs={5}>
             <SearchBar />
             </Grid>
-            <Grid item xs={7}>
+            <Grid item xs={6}>
             
             </Grid>
             <Grid item xs={1}>

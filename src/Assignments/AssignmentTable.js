@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ShareIcon from '@material-ui/icons/Share';
+import AssignmentPopup from './AssignmentPopup';
 
 const columns = [
   { id: 'name', label: 'Assignment', minWidth: 200 },
@@ -41,6 +42,7 @@ const rows = []
 for (let i = 0; i < test_data.length; i += 1) {
   rows.push(createData(...test_data[i]));
 }
+
 const useStyles = makeStyles({
   root: {
     width: '100%',
@@ -53,11 +55,24 @@ const useStyles = makeStyles({
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+
+  const [openAssignment, setopenAssignment] = React.useState(false);
+
+  const handleCLickRow = () => {
+    setopenAssignment(true);
+  };
+  const handleCloseRow = () => {
+    setopenAssignment(false);
+  };
+
   return (
     <React.Fragment>
-    <TableRow hover role="checkbox" tabIndex={-1} key={row.i}>
-      <TableCell>{row.name}</TableCell>
-      <TableCell align="right">{row.i}</TableCell>
+    <TableRow hover role="checkbox" tabIndex={-1} key={row.i} >
+      <TableCell onClick={handleCLickRow}>{row.name}</TableCell>
+      <TableCell onClick={handleCLickRow} align="right">{row.i}</TableCell>
+      {openAssignment && (
+        <AssignmentPopup assignment={row} parentCallback={handleCloseRow} />
+      )}
       <TableCell align="right">
         <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
           <EditIcon />
