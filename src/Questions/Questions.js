@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(5),
   },
 }));
+
 function Questions() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -45,7 +46,7 @@ function Questions() {
             <Filter parentCallback={setFilterViews} />
             </Grid>
             <Grid item xs={1}>
-            <Fab color="#6F9283" aria-label="add" onClick={handleClickOpen}>
+            <Fab aria-label="add" onClick={handleClickOpen}>
               <AddIcon />
             </Fab>
             </Grid>
@@ -60,7 +61,7 @@ function Questions() {
           parentCallback={handleClose}
           type="add"
         />
-      )}
+        )}
 
     </div>
   );

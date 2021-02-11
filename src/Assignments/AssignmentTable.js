@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ShareIcon from '@material-ui/icons/Share';
+import ViewAssignmentPopup from './ViewAssignmentPopup';
 import AssignmentPopup from './AssignmentPopup';
 
 const columns = [
@@ -29,8 +30,8 @@ const columns = [
 
 const test_data = [
   [0, 'Assignment 1', [0, 1, 2]],
-  [1, 'Assignment 2', [0, 1, 2]],
-  [2, 'Assignment 3', [0, 1, 2]],
+  [1, 'Assignment 2', [0, 2, 1]],
+  [2, 'Assignment 3', [2, 1, 0]],
 ];
 
 function createData(i, name, questions) {
@@ -54,15 +55,26 @@ const useStyles = makeStyles({
 
 function Row(props) {
   const { row } = props;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
-  const [openAssignment, setopenAssignment] = React.useState(false);
+  const [openAssignment, setopenAssignment] = useState(false);
 
+  // view assignment dialog
   const handleCLickRow = () => {
     setopenAssignment(true);
   };
   const handleCloseRow = () => {
     setopenAssignment(false);
+  };
+
+  // edit assignment dialog 
+  const [openEdit, setOpenEdit] = useState(false);
+
+  const handleClickEdit = () => {
+    setOpenEdit(true);
+  };
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
   };
 
   return (
@@ -71,13 +83,22 @@ function Row(props) {
       <TableCell onClick={handleCLickRow}>{row.name}</TableCell>
       <TableCell onClick={handleCLickRow} align="right">{row.i}</TableCell>
       {openAssignment && (
-        <AssignmentPopup assignment={row} parentCallback={handleCloseRow} />
+        <ViewAssignmentPopup assignment={row} parentCallback={handleCloseRow} />
       )}
       <TableCell align="right">
-        <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+        <IconButton aria-label="expand row" size="small" onClick={handleClickEdit}>
           <EditIcon />
         </IconButton>
       </TableCell>
+      {openEdit && (
+        <AssignmentPopup
+          //callback
+          parentCallback={handleCloseEdit}
+          type="edit"
+          assignment={row}
+        />
+        )}
+
       <TableCell align="right">
         <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
           <DeleteIcon />
@@ -93,7 +114,7 @@ function Row(props) {
   )
 };
 
-export default function StickyHeadTable() {
+export default function AssignmentTable() {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);

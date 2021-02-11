@@ -6,19 +6,20 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import { DialogActions } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import CheckIcon from '@material-ui/icons/Check';
-import Box from '@material-ui/core/Box';
-import TableRow from '@material-ui/core/TableRow';
-
+import Grid from '@material-ui/core/Grid';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import FilterCategory from './FilterCategory';
+import FilterDifficulty from './FilterDifficulty';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     position: 'relative',
-    margin: theme.spacing(3),
     padding: theme.spacing(3),
   },
   actionButton: {
@@ -26,16 +27,24 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(2),
   },
-  table: {
-    margin: theme.spacing(1),
-    minWidth: 120,
+  paddedTop: {
+    paddingTop: theme.spacing(15),
+  },
+  paper: {
+    width: 350,
+    height: 265,
+    overflow: 'auto',
+  },
+  para: {
+    paddingRight: theme.spacing(5),
   },
 }));
 
 const DialogContent = withStyles((theme) => ({
   root: {
     position: 'relative',
-    margin: theme.spacing(3),
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
     // padding: theme.spacing(3),
     border: 'none',
     display: 'flex',
@@ -68,76 +77,92 @@ function createData(i, question, category, difficulty, options, answer) {
   return { i, question, category, difficulty, options, answer };
 }
 
-const rows = []
+const question_bank = []
 
 for (let i = 0; i < test_data.length; i += 1) {
-  rows.push(createData(...test_data[i]));
+    question_bank.push(createData(...test_data[i]));
 }
 
-const useRowStyles = makeStyles({
-  root: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-});
+// question list function
+function not(a, b) {
+    return a.filter((value) => b.indexOf(value) === -1);
+}
 
-function Row(props) {
-  const { row } = props;
-  const classes = useRowStyles();
-
-  return (
-    <React.Fragment>
-    <TableRow tabIndex={-1} key={row.i} >
-      <TableCell>
-      </TableCell>
-      <TableCell>{row.question}</TableCell>
-    </TableRow>
-    <TableRow className={classes.root}>
-      <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={2}> 
-          <Box marginLeft={16} margin={1}>
-            <Table size="small" aria-label="purchases">
-              <TableBody>
-                {row.options.map((option) => (
-                  <TableRow key={option}>
-                    <TableCell component="th" scope="row">
-                      {option}
-                    </TableCell>
-                    <TableCell align="right" component="th" scope="row">
-                      {row.answer===option && <CheckIcon/>}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>  
-          </Box>
-      </TableCell>
-    </TableRow>
-    </React.Fragment>
-  )
-};
-
-export default function AssignmentPopup(props) {
-  const { assignment, parentCallback } = props;
+export default function ViewAssignmentPopup(props) {
+  const { assignment, parentCallback, type } = props;
   const classes = useStyles();
 
-    // setting questions for the assignment
-    const [qns, setQns] = useState([]);
+  function setFilterViews() {
+    //todo
+  }
 
-    const setQnData = () => {
-      for (let i = 0; i < assignment.questions.length; i += 1) {
-        setQns((qns) => [...qns, rows[assignment.questions[i]]]);
-      }
-    };
+  // setting assignment values (name and array of qns)
+  const [values, setValues] = useState({
+    name: typeof assignment !== 'undefined' ? assignment.name : '',
+  });
 
-    useEffect(() => {
-      setQnData();
-    }, []);
+  // setting questions for the assignment
+  const [qns, setQns] = useState([]);
+
+  const setQuestionData = () => {
+    if(typeof assignment !== 'undefined') {
+        for (let i = 0; i < assignment.questions.length; i += 1) {
+            setQns((qns) => [...qns, question_bank[assignment.questions[i]]]);
+        }
+    } 
+  };
+
+  useEffect(() => {
+    setQuestionData();
+  }, []);
 
   //DIALOG ACTIONS
   const handleClose = () => {
     parentCallback();
   };
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  // list of questions
+  const [left, setLeft] = useState([]);
+  const [right, setRight] = useState([]);
+
+  useEffect(() => {
+    setLeft(not(question_bank, qns));
+    setRight(qns)
+  }, [qns]);
+
+  const handleRight = (value) => {
+    setRight(right.concat([value]));
+    setLeft(not(left, [value]));
+  };
+
+  const handleLeft = (value) => {
+    setLeft(left.concat([value]));
+    setRight(not(right, [value]));
+  };
+
+  const customList = (items, type) => (
+    <Paper className={classes.paper}>
+      <List dense component="div" role="list">
+        {items.map((value) => {
+          const labelId = `transfer-list-item-${value}-label`;
+          return (
+            <ListItem key={value.i} role="listitem" button onClick={()=>{if(type=='left'){
+                                                                            handleRight(value);
+                                                                        } else {
+                                                                            handleLeft(value);
+                                                                        }}}>
+              <ListItemText id={labelId} primary={value.question} />
+            </ListItem>
+          );
+        })}
+        <ListItem />
+      </List>
+    </Paper>
+  );
 
   return (
     <>
@@ -152,24 +177,40 @@ export default function AssignmentPopup(props) {
         marginBottom="5"
       >
         <DialogTitle id="assignmentPopup">
-          {assignment.name}
+            {type === 'add' ? 'Add New Assignment' : 'Edit Assignment'}
         </DialogTitle>
-        <DialogContent dividers >
-        <Paper>
-          <TableContainer>
-            <Table stickyHeader aria-label="sticky table" >
-              <TableBody>
-                {qns.map((row) => (
-                  <Row key={row.question} row={row} />
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
+        <DialogContent dividers>
+        <Grid container spacing={3} justify="center" alignItems="center" className={classes.root}>
+        <Grid item xs={5}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel htmlFor="name-input">Assignment Name</InputLabel>
+            <Input id="name-input" value={values.name} onChange={handleChange('name')} labelWidth={60}/>
+          </FormControl>
+        </Grid>
+        <Grid item xs={7}></Grid>
+        <Grid item xs={6}>
+            <Typography variant="h6"> <b>Question Bank</b></Typography>
+        </Grid>
+        <Grid item xs={6}>
+            <Typography variant="h6"> <b>Assignment Questions</b></Typography>
+        </Grid>
+        <Grid item xs={6} className={classes.filter}>
+          <FilterCategory parentCallback={setFilterViews}/>
+          <FilterDifficulty parentCallback={setFilterViews}/>
+        </Grid>
+        <Grid item xs={6}>
+            <Typography paragraph className={classes.para}> Click on the questions on the left to add to the assignment. To remove, click on the question on the right.</Typography>
+        </Grid>
+        <Grid item xs={6}>{customList(left, 'left')}</Grid>
+        <Grid item xs={6}>{customList(right, 'right')}</Grid>
+        </Grid>
         </DialogContent>
         <DialogActions>
+          <Button className={classes.actionButton} variant="contained" color="primary" onClick={handleClose}>
+            Cancel
+          </Button>
           <Button className={classes.actionButton} variant="contained" color="secondary" onClick={handleClose}>
-            Done
+            Confirm
           </Button>
         </DialogActions>
       </Dialog>

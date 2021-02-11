@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import AssignmentTable from './AssignmentTable';
@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import SearchBar from '../Components/SearchBar';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import AssignmentPopup from './AssignmentPopup';
 
 const useStyles = makeStyles((theme) => ({
   paddedItem: {
@@ -17,9 +18,15 @@ const useStyles = makeStyles((theme) => ({
 function Questions() {
   const classes = useStyles();
 
-  function handleClickOpen() {
-    //todo
-  }
+  // add assignment dialog 
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div>
@@ -31,11 +38,9 @@ function Questions() {
             <Grid item xs={5}>
             <SearchBar />
             </Grid>
-            <Grid item xs={6}>
-            
-            </Grid>
+            <Grid item xs={6}> </Grid>
             <Grid item xs={1}>
-            <Fab color="#C78283" aria-label="add">
+            <Fab aria-label="add" onClick={handleClickOpen}>
               <AddIcon />
             </Fab>
             </Grid>
@@ -43,6 +48,15 @@ function Questions() {
             <AssignmentTable />
             </Grid>
         </Grid>
+
+        {open && (
+        <AssignmentPopup
+          //callback
+          parentCallback={handleClose}
+          type="add"
+        />
+        )}
+
     </div>
   );
 }

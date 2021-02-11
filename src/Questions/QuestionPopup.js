@@ -75,12 +75,12 @@ export default function QuestionPopup(props) {
     option4: typeof row !== 'undefined' ? row.options[3] : '',
   });
 
-  const [answer, setAnswer] = React.useState(typeof row !== 'undefined' ? row.answer : '');
+  const [answer, setAnswer] = useState(typeof row !== 'undefined' ? row.answer : '');
 
-  const [selected1, setSelected1] = React.useState(typeof row !== 'undefined' ? (row.options[0]===row.answer ? true : false) : false);
-  const [selected2, setSelected2] = React.useState(typeof row !== 'undefined' ? (row.options[1]===row.answer ? true : false) : false);
-  const [selected3, setSelected3] = React.useState(typeof row !== 'undefined' ? (row.options[2]===row.answer ? true : false) : false);
-  const [selected4, setSelected4] = React.useState(typeof row !== 'undefined' ? (row.options[3]===row.answer ? true : false) : false);
+  const [selected1, setSelected1] = useState(typeof row !== 'undefined' ? (row.options[0]===row.answer ? true : false) : false);
+  const [selected2, setSelected2] = useState(typeof row !== 'undefined' ? (row.options[1]===row.answer ? true : false) : false);
+  const [selected3, setSelected3] = useState(typeof row !== 'undefined' ? (row.options[2]===row.answer ? true : false) : false);
+  const [selected4, setSelected4] = useState(typeof row !== 'undefined' ? (row.options[3]===row.answer ? true : false) : false);
 
   //DIALOG ACTIONS
   const handleClose = () => {
