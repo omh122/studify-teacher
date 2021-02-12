@@ -37,8 +37,8 @@ function Graph(){
         layout={ {
             barmode:'group', 
             title: "Chuan Bin's Statistics",
-            width: 720,
-            height: 600
+            width: 600,
+            height: 400
         } }
       />
       );

@@ -17,7 +17,7 @@ import TableRow from '@material-ui/core/TableRow';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    position: 'relative',
+    // position: 'relative',
     margin: theme.spacing(3),
     padding: theme.spacing(3),
   },
@@ -28,7 +28,11 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   paddedTop: {
-    paddingTop: theme.spacing(15),
+    paddingTop: theme.spacing(20),
+  },
+  paper: {
+    padding: theme.spacing(1),
+    overflow: 'auto',
   },
 }));
 
@@ -93,7 +97,7 @@ function Row(props) {
       </TableCell>
       <TableCell>{row.question}</TableCell>
     </TableRow>
-    <TableRow className={classes.root}>
+    <TableRow >
       <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={2}> 
           <Box marginLeft={16} margin={1}>
             <Table size="small" aria-label="purchases">
@@ -155,7 +159,7 @@ export default function ViewAssignmentPopup(props) {
           {assignment.name}
         </DialogTitle>
         <DialogContent dividers className={classes.paddedTop}>
-        <Paper >
+        <Paper className={classes.paper}>
           <TableContainer>
             <Table stickyHeader aria-label="sticky table" >
               <TableBody>

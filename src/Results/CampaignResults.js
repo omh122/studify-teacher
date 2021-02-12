@@ -1,19 +1,28 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import Graph from './Graph';
 import { makeStyles } from '@material-ui/core/styles';
-// create animations https://www.youtube.com/watch?v=JcHLxzrsRS4 
+import Grid from '@material-ui/core/Grid';
+import StudentList from './StudentList';
+
 const useStyles = makeStyles((theme) => ({
-  paddedItem:{
-    padding: theme.spacing(3)
-  }
+  paddedItem: {
+    paddingLeft: theme.spacing(15),
+    paddingRight: theme.spacing(15),
+    paddingTop: theme.spacing(7),
+  },
 }));
 function Home() {
   const classes = useStyles();
   return (
     <div>
-        <Typography  className={classes.paddedItem} paragraph>
-          This is a campaign results page
-        </Typography>
+      <Grid container spacing={3} className={classes.paddedItem}>
+        <Grid item xs={3}>
+          <StudentList />
+        </Grid>
+        <Grid item xs={9} align='center' justify='center'>
+          <Graph />
+        </Grid>
+      </Grid>
     </div>
   );
 }

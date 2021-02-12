@@ -96,9 +96,9 @@ export default function ViewAssignmentPopup(props) {
   }
 
   // setting assignment values (name and array of qns)
-  const [values, setValues] = useState({
-    name: typeof assignment !== 'undefined' ? assignment.name : '',
-  });
+  const [name, setName] = useState(
+    typeof assignment !== 'undefined' ? assignment.name : '',
+  );
 
   // setting questions for the assignment
   const [qns, setQns] = useState([]);
@@ -120,8 +120,8 @@ export default function ViewAssignmentPopup(props) {
     parentCallback();
   };
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+  const handleChange = (event) => {
+    setName(event.target.value);
   };
 
   // list of questions
@@ -149,7 +149,7 @@ export default function ViewAssignmentPopup(props) {
         {items.map((value) => {
           const labelId = `transfer-list-item-${value}-label`;
           return (
-            <ListItem key={value.i} role="listitem" button onClick={()=>{if(type=='left'){
+            <ListItem key={value.i} role="listitem" button onClick={()=>{if(type==='left'){
                                                                             handleRight(value);
                                                                         } else {
                                                                             handleLeft(value);
@@ -183,7 +183,7 @@ export default function ViewAssignmentPopup(props) {
         <Grid item xs={5}>
           <FormControl fullWidth variant="outlined">
             <InputLabel htmlFor="name-input">Assignment Name</InputLabel>
-            <Input id="name-input" value={values.name} onChange={handleChange('name')} labelWidth={60}/>
+            <Input id="name-input" value={name} onChange={handleChange} labelWidth={60}/>
           </FormControl>
         </Grid>
         <Grid item xs={7}></Grid>

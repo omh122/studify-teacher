@@ -1,21 +1,32 @@
 import React from 'react';
 import Graph from './Graph';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-// create animations https://www.youtube.com/watch?v=JcHLxzrsRS4 
+import SelectAssignment from './SelectAssignment';
+import Grid from '@material-ui/core/Grid';
+import StudentList from './StudentList';
+
 const useStyles = makeStyles((theme) => ({
-  paddedItem:{
-    padding: theme.spacing(3)
-  }
+  paddedItem: {
+    paddingLeft: theme.spacing(15),
+    paddingRight: theme.spacing(15),
+    // paddingTop: theme.spacing(5),
+  },
 }));
 function Home() {
   const classes = useStyles();
   return (
     <div>
-        <Typography  className={classes.paddedItem} paragraph>
-          This is a assignment results page
-        </Typography>
-        <Graph />
+      <Grid container spacing={3} className={classes.paddedItem}>
+        <Grid item xs={12} align='center'>
+          <SelectAssignment />
+        </Grid>
+        <Grid item xs={3}>
+          <StudentList />
+        </Grid>
+        <Grid item xs={9} align='center' justify='center'>
+          <Graph />
+        </Grid>
+      </Grid>
     </div>
   );
 }

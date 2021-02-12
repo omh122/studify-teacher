@@ -9,9 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ShareIcon from '@material-ui/icons/Share';
 import ConfirmationDialog from '../Components/ConfirmationDialog';
 
 const columns = [
@@ -34,6 +32,13 @@ const test_data = [
   ['Ooi Min Hui', 'U1822023F', 'SSP2'],
   ['Phoe Chuan Bin', 'U1822345A', 'SSP3'],
   ['Chen Gangzhe', 'U1822146B', 'SSP4'],
+  ['Deng Jinyang', 'U1822143D', 'SSP1'],
+  ['Wong Wei Jie', 'U1822423E', 'SSP2'],
+  ['Derry Tan', 'U1822521A', 'SSP3'],
+  ['Ng Jiayu', 'U1822301A', 'SSP4'],
+  ['Tan Tan', 'U1821002C', 'SSP1'],
+  ['Milky', 'U1821922D', 'SSP2'],
+  ['Boki', 'U1820141A', 'SSP3'],
 ];
 
 function createData(name, id, group) {
@@ -99,7 +104,7 @@ function Row(props) {
 export default function AssignmentTable() {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -138,7 +143,7 @@ export default function AssignmentTable() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}
