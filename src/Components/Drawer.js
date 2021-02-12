@@ -20,9 +20,10 @@ import Hidden from '@material-ui/core/Hidden';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 
 import Home from '../Home/Home';
+import Results from '../Results/Results';
 import Questions from '../Questions/Questions';
 import Assignments from '../Assignments/Assignments';
-import Results from '../Results/Results';
+import Students from '../Students/Students';
 import Resources from '../Resources/Resources';
 
 const drawerWidth = 240;
@@ -104,16 +105,16 @@ export default function PersistentDrawerRight() {
             route:"/"
         },
         {
+            text:"Results",
+            route:"/studentresults/campaignresults"
+        },
+        {
             text:"Questions",
             route:"/questionbank"
         },
         {
             text:"Assignments",
             route:"/assignments"
-        },
-        {
-            text:"Results",
-            route:"/studentresults/campaignresults"
         },
         {
             text:"Students",
@@ -187,10 +188,10 @@ export default function PersistentDrawerRight() {
             renders the first one that matches the current URL. */}
         <Switch>
             <Route exact path="/" component={Home}/>
+            <Route path="/studentresults/:resultsTab" component={Results}/>
             <Route path="/questionbank" component={Questions}/>
             <Route path="/assignments" component={Assignments}/>
-            <Route path="/studentresults/:resultsTab" component={Results}/>
-            <Route path="/studentdata" component={Home}/>
+            <Route path="/studentdata" component={Students}/>
             <Route path="/teachingmaterials" component={Resources}/>
         </Switch>
     

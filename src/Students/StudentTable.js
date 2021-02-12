@@ -8,45 +8,36 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import Collapse from '@material-ui/core/Collapse';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import CheckIcon from '@material-ui/icons/Check';
-import Box from '@material-ui/core/Box';
-import QuestionPopup from './QuestionPopup';
+import ShareIcon from '@material-ui/icons/Share';
 import ConfirmationDialog from '../Components/ConfirmationDialog';
 
-
 const columns = [
-  { id: 'expand_icon', label: ' ' },
-  { id: 'question', label: 'Question', minWidth: 200 },
+  { id: 'name', label: 'Student', minWidth: 200 },
   {
-    id: 'category',
-    label: 'Category',
+    id: 'id',
+    label: 'Matric Number',
     minWidth: 100,
-    align: 'right',
   },
   {
-    id: 'difficulty',
-    label: 'Difficulty',
+    id: 'group',
+    label: 'Tutorial Group',
     minWidth: 100,
-    align: 'right',
   },
-  { id: 'edit_icon', label: ' ' },
   { id: 'delete_icon', label: ' ' },
 ];
 
 const test_data = [
-  [0, 'What is the name of this course?', 'Introduction', 'Easy', ['CZ3001', 'CZ3002', 'CZ3003', 'CZ3004'], 'CZ3003'],
-  [1, 'What is the name of this game?', 'Introduction', 'Medium', ['Studify', 'Study Game', 'Minesweeper', 'Poker'], 'Studify'],
-  [2, 'What is the name of the course coordinatpr?', 'Introduction', 'Hard', ['Chuan Bin', 'Gang Zhe', 'Xiaoqing', 'Min Hui'], 'Xiaoqing'],
+  ['Wong Xiaoqing', 'U1822123C', 'SSP1'],
+  ['Ooi Min Hui', 'U1822023F', 'SSP2'],
+  ['Phoe Chuan Bin', 'U1822345A', 'SSP3'],
+  ['Chen Gangzhe', 'U1822146B', 'SSP4'],
 ];
 
-function createData(i, question, category, difficulty, options, answer) {
-  return { i, question, category, difficulty, options, answer };
+function createData(name, id, group) {
+  return { name, id, group };
 }
 
 const rows = []
@@ -54,6 +45,7 @@ const rows = []
 for (let i = 0; i < test_data.length; i += 1) {
   rows.push(createData(...test_data[i]));
 }
+
 const useStyles = makeStyles({
   root: {
     width: '100%',
@@ -63,29 +55,13 @@ const useStyles = makeStyles({
   },
 });
 
-const useRowStyles = makeStyles({
-  root: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-});
-
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = useState(false);
 
-  //edit dialog actions
-  const [openEdit, setOpenEdit] = useState(false);
-  const handleClickEdit = () => {
-    setOpenEdit(true);
-  };
-  const handleCloseEdit = () => {
-    setOpenEdit(false);
-  };
-
   //delete dialog actions
   const [openDelete, setOpenDelete] = useState(false);
+  
   const handleClickDelete = () => {
     setOpenDelete(true);
   };
@@ -96,32 +72,12 @@ function Row(props) {
     }
   };
 
-  const classes = useRowStyles();
-
   return (
     <React.Fragment>
     <TableRow tabIndex={-1} key={row.i} >
-      <TableCell>
-        <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-          {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-        </IconButton>
-      </TableCell>
-      <TableCell>{row.question}</TableCell>
-      <TableCell align="right">{row.category}</TableCell>
-      <TableCell align="right">{row.difficulty}</TableCell>
-      <TableCell align="right">
-        <IconButton aria-label="expand row" size="small" onClick={handleClickEdit}>
-          <EditIcon />
-        </IconButton>
-      </TableCell>
-      {openEdit && (
-        <QuestionPopup
-          //callback
-          parentCallback={handleCloseEdit}
-          type="edit"
-          row={row}
-        />
-      )}
+      <TableCell>{row.name}</TableCell>
+      <TableCell>{row.id}</TableCell>
+      <TableCell>{row.group}</TableCell>
       <TableCell align="right">
         <IconButton aria-label="expand row" size="small" onClick={handleClickDelete}>
           <DeleteIcon />
@@ -130,39 +86,17 @@ function Row(props) {
       {openDelete && (
         <ConfirmationDialog
           //callback
-          title={"Delete Question"}
-          content={"Confirm deletion of this question? This action cannot be undone."}
+          title={"Delete Student"}
+          content={"Confirm deletion of this student? This action cannot be undone."}
           parentCallback={handleDialogResult}
         />
       )}
-    </TableRow>
-    <TableRow className={classes.root}>
-      <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={2}> 
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <Box marginLeft={16} margin={1}>
-            <Table size="small" aria-label="purchases">
-              <TableBody>
-                {row.options.map((option) => (
-                  <TableRow key={option}>
-                    <TableCell component="th" scope="row">
-                      {option}
-                    </TableCell>
-                    <TableCell align="right" component="th" scope="row">
-                      {row.answer===option && <CheckIcon/>}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>  
-          </Box>
-        </Collapse>
-      </TableCell>
     </TableRow>
     </React.Fragment>
   )
 };
 
-export default function QuestionTable() {
+export default function AssignmentTable() {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -187,7 +121,7 @@ export default function QuestionTable() {
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth,
-                           backgroundColor: '#7698B3',
+                           backgroundColor: '#6F9283',
                            color: "#fff"      
                          }}
                 >

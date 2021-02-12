@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline-block',
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(2),
+    marginBottom: theme.spacing(1),
   },
   form: {
     margin: theme.spacing(1),
@@ -239,7 +240,7 @@ export default function QuestionPopup(props) {
             </Grid>  
         </DialogContent>
         <DialogActions>
-          <Button className={classes.actionButton} variant="contained" color="primary" onClick={handleClose}>
+          <Button className={classes.actionButton} onClick={handleClose}>
             Cancel
           </Button>
           <Button className={classes.actionButton} variant="contained" color="secondary" onClick={addQuestion}>

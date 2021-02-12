@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline-block',
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(2),
+    marginBottom: theme.spacing(1),
   },
   paddedTop: {
     paddingTop: theme.spacing(15),

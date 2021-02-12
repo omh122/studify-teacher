@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
   },
   actionButton: {
     display: 'inline-block',
-    marginTop: theme.spacing(1),
     marginRight: theme.spacing(2),
   },
   paddedTop: {
@@ -206,7 +205,7 @@ export default function ViewAssignmentPopup(props) {
         </Grid>
         </DialogContent>
         <DialogActions>
-          <Button className={classes.actionButton} variant="contained" color="primary" onClick={handleClose}>
+          <Button className={classes.actionButton} onClick={handleClose}>
             Cancel
           </Button>
           <Button className={classes.actionButton} variant="contained" color="secondary" onClick={handleClose}>

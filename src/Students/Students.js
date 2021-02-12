@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import AssignmentTable from './AssignmentTable';
+import StudentTable from './StudentTable';
 import Grid from '@material-ui/core/Grid';
 import SearchBar from '../Components/SearchBar';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import AssignmentPopup from './AssignmentPopup';
+import StudentPopup from './StudentPopup';
 
 const useStyles = makeStyles((theme) => ({
   paddedItem: {
@@ -15,10 +15,10 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(5),
   },
 }));
-function Assignments() {
+function Students() {
   const classes = useStyles();
 
-  // add assignment dialog 
+  // add student dialog 
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -31,7 +31,7 @@ function Assignments() {
   return (
     <div>
         <Typography  className={classes.paddedItem} variant="h3">
-          Assignments
+          Students
         </Typography>
         
         <Grid container spacing={2} className={classes.paddedItem} alignItems="center" justify="center">
@@ -45,12 +45,12 @@ function Assignments() {
             </Fab>
             </Grid>
             <Grid item xs={12}>
-            <AssignmentTable />
+            <StudentTable />
             </Grid>
         </Grid>
 
         {open && (
-        <AssignmentPopup
+        <StudentPopup
           //callback
           parentCallback={handleClose}
           type="add"
@@ -61,4 +61,4 @@ function Assignments() {
   );
 }
 
-export default Assignments;
+export default Students;

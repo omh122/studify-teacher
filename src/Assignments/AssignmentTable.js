@@ -14,6 +14,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ShareIcon from '@material-ui/icons/Share';
 import ViewAssignmentPopup from './ViewAssignmentPopup';
 import AssignmentPopup from './AssignmentPopup';
+import ConfirmationDialog from '../Components/ConfirmationDialog';
 
 const columns = [
   { id: 'name', label: 'Assignment', minWidth: 200 },
@@ -67,7 +68,7 @@ function Row(props) {
     setopenAssignment(false);
   };
 
-  // edit assignment dialog 
+  // edit dialog actions 
   const [openEdit, setOpenEdit] = useState(false);
 
   const handleClickEdit = () => {
@@ -75,6 +76,19 @@ function Row(props) {
   };
   const handleCloseEdit = () => {
     setOpenEdit(false);
+  };
+
+  //delete dialog actions
+  const [openDelete, setOpenDelete] = useState(false);
+  
+  const handleClickDelete = () => {
+    setOpenDelete(true);
+  };
+  const handleDialogResult = (continueAction) => {
+    setOpenDelete(false);
+    if (continueAction) {
+        //complete action
+    }
   };
 
   return (
@@ -100,10 +114,18 @@ function Row(props) {
         )}
 
       <TableCell align="right">
-        <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+        <IconButton aria-label="expand row" size="small" onClick={handleClickDelete}>
           <DeleteIcon />
         </IconButton>
       </TableCell>
+      {openDelete && (
+        <ConfirmationDialog
+          //callback
+          title={"Delete Assignment"}
+          content={"Confirm deletion of this assignment? This action cannot be undone."}
+          parentCallback={handleDialogResult}
+        />
+      )}
       <TableCell align="right">
         <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
           <ShareIcon />
