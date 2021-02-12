@@ -63,15 +63,15 @@ const DialogContent = withStyles((theme) => ({
   },
 }))(MuiDialogContent);
 
-export default function StudentPopup(props) {
-  const { parentCallback } = props;
+export default function ResourcePopup(props) {
+  const { parentCallback, type, row } = props;
   const classes = useStyles();
   const [values, setValues] = useState({
-    name: '',
-    id: '',
-    group: '',
+    name: typeof row !== 'undefined' ? row.name : '',
+    category: typeof row !== 'undefined' ? row.category : '',
+    difficulty: typeof row !== 'undefined' ? row.difficulty : '',
+    url: typeof row !== 'undefined' ? row.url : '',
   });
-
 
   //DIALOG ACTIONS
   const handleClose = () => {
@@ -82,8 +82,7 @@ export default function StudentPopup(props) {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-
-  const addStudent = (event) => {
+  const addResource = (event) => {
    //todo
    parentCallback();
 
@@ -93,21 +92,22 @@ export default function StudentPopup(props) {
     <>
       <Dialog
         onClose={handleClose}
-        aria-labelledby="signup popup"
+        aria-labelledby="resource popup"
         open={true}
         className={classes.root}
+        fullWidth={true}
         maxWidth="md" //or "lg"
         scroll="body"
         marginBottom="5"
       >
-        <DialogTitle id="studentPopup">
-          Add New Student
+        <DialogTitle id="resourcePopup">
+          {type === 'add' ? 'Add New Resource' : 'Edit Resource'}
         </DialogTitle>
         <DialogContent dividers>
             <Grid container spacing={3}>
               <Grid item xs={12}>
               <FormControl fullWidth className={classes.form} variant="outlined">
-                <InputLabel htmlFor="question-input">Student Name</InputLabel>
+                <InputLabel htmlFor="name-input">Name</InputLabel>
                 <Input
                   id="name-input"
                   value={values.name}
@@ -116,40 +116,55 @@ export default function StudentPopup(props) {
                 />
               </FormControl>
               </Grid>
+              <Grid item xs={6}>
+              <FormControl fullWidth className={classes.form}>
+                <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={values.category}
+                  onChange={handleChange('category')}
+                >
+                  <MenuItem value={'Introduction'}>Introduction</MenuItem>
+                  <MenuItem value={'Analysis'}>Analysis</MenuItem>
+                  <MenuItem value={'Design'}>Design</MenuItem>
+                  <MenuItem value={'Implementation'}>Implementation</MenuItem>
+                </Select>
+              </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+              <FormControl fullWidth className={classes.form}>
+                <InputLabel id="demo-simple-select-label">Difficulty</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={values.difficulty}
+                  onChange={handleChange('difficulty')}
+                >
+                  <MenuItem value={'Easy'}>Easy</MenuItem>
+                  <MenuItem value={'Medium'}>Medium</MenuItem>
+                  <MenuItem value={'Hard'}>Hard</MenuItem>
+                </Select>
+              </FormControl>
+              </Grid>
               <Grid item xs={12}>
               <FormControl fullWidth className={classes.form} variant="outlined">
-                <InputLabel htmlFor="question-input">Matric Number</InputLabel>
+                <InputLabel htmlFor="question-input">URL</InputLabel>
                 <Input
-                  id="id-input"
-                  value={values.id}
-                  onChange={handleChange('id')}
+                  id="question-input"
+                  value={values.url}
+                  onChange={handleChange('url')}
                   labelWidth={60}
                 />
               </FormControl>
               </Grid>
-              <Grid item xs={12}>
-              <FormControl fullWidth className={classes.form}>
-                <InputLabel id="demo-simple-select-label">Tutorial Group</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={values.group}
-                  onChange={handleChange('group')}
-                >
-                  <MenuItem value={'SSP1'}>SSP1</MenuItem>
-                  <MenuItem value={'SSP2'}>SSP2</MenuItem>
-                  <MenuItem value={'SSP3'}>SSP3</MenuItem>
-                  <MenuItem value={'SSP4'}>SSP4</MenuItem>
-                </Select>
-              </FormControl>
-              </Grid>
-            </Grid>
+            </Grid>  
         </DialogContent>
         <DialogActions>
           <Button className={classes.actionButton} onClick={handleClose}>
             Cancel
           </Button>
-          <Button className={classes.actionButton} variant="contained" color="secondary" onClick={addStudent}>
+          <Button className={classes.actionButton} variant="contained" color="secondary" onClick={addResource}>
             Confirm
           </Button>
         </DialogActions>
