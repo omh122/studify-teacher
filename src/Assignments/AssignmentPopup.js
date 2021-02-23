@@ -100,21 +100,6 @@ export default function ViewAssignmentPopup(props) {
     typeof assignment !== 'undefined' ? assignment.name : '',
   );
 
-  // setting questions for the assignment
-  const [qns, setQns] = useState([]);
-
-  const setQuestionData = () => {
-    if(typeof assignment !== 'undefined') {
-        for (let i = 0; i < assignment.questions.length; i += 1) {
-            setQns((qns) => [...qns, question_bank[assignment.questions[i]]]);
-        }
-    } 
-  };
-
-  useEffect(() => {
-    setQuestionData();
-  }, []);
-
   //DIALOG ACTIONS
   const handleClose = () => {
     parentCallback();
@@ -125,13 +110,12 @@ export default function ViewAssignmentPopup(props) {
   };
 
   // list of questions
-  const [left, setLeft] = useState([]);
-  const [right, setRight] = useState([]);
-
-  useEffect(() => {
-    setLeft(not(question_bank, qns));
-    setRight(qns)
-  }, [qns]);
+  const [left, setLeft] = useState(
+    typeof assignment !== 'undefined' ? not(question_bank, assignment.questions) : question_bank
+  );
+  const [right, setRight] = useState(
+    typeof assignment !== 'undefined' ? assignment.questions : []
+  );
 
   const handleRight = (value) => {
     setRight(right.concat([value]));

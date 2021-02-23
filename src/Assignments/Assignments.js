@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import AssignmentTable from './AssignmentTable';
@@ -7,6 +7,8 @@ import SearchBar from '../Components/SearchBar';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import AssignmentPopup from './AssignmentPopup';
+import assignmentService from '../services/assignments';
+import { trackPromise } from 'react-promise-tracker';
 
 const useStyles = makeStyles((theme) => ({
   paddedItem: {
@@ -18,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
 function Assignments() {
   const classes = useStyles();
 
+  const [assignments, setAssignments] = useState([]);
+
   // add assignment dialog 
   const [open, setOpen] = useState(false);
 
@@ -27,6 +31,15 @@ function Assignments() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  // fetch data
+  useEffect(() => {
+    async function fetchData() {
+      const res = await trackPromise(assignmentService.getAssignments());
+      setAssignments(res.data);
+    }
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -45,7 +58,7 @@ function Assignments() {
             </Fab>
             </Grid>
             <Grid item xs={12}>
-            <AssignmentTable />
+            <AssignmentTable assignments={assignments}/>
             </Grid>
         </Grid>
 

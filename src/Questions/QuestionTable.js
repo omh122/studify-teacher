@@ -18,6 +18,9 @@ import CheckIcon from '@material-ui/icons/Check';
 import Box from '@material-ui/core/Box';
 import QuestionPopup from './QuestionPopup';
 import ConfirmationDialog from '../Components/ConfirmationDialog';
+import questionService from '../services/questions';
+import { trackPromise } from 'react-promise-tracker';
+import { useHistory } from 'react-router-dom';
 
 
 const columns = [
@@ -39,21 +42,6 @@ const columns = [
   { id: 'delete_icon', label: ' ' },
 ];
 
-const test_data = [
-  [0, 'What is the name of this course?', 'Introduction', 'Easy', ['CZ3001', 'CZ3002', 'CZ3003', 'CZ3004'], 'CZ3003'],
-  [1, 'What is the name of this game?', 'Introduction', 'Medium', ['Studify', 'Study Game', 'Minesweeper', 'Poker'], 'Studify'],
-  [2, 'What is the name of the course coordinatpr?', 'Introduction', 'Hard', ['Chuan Bin', 'Gang Zhe', 'Xiaoqing', 'Min Hui'], 'Xiaoqing'],
-];
-
-function createData(i, question, category, difficulty, options, answer) {
-  return { i, question, category, difficulty, options, answer };
-}
-
-const rows = []
-
-for (let i = 0; i < test_data.length; i += 1) {
-  rows.push(createData(...test_data[i]));
-}
 const useStyles = makeStyles({
   root: {
     width: '100%',
@@ -73,6 +61,7 @@ const useRowStyles = makeStyles({
 
 function Row(props) {
   const { row } = props;
+  const history = useHistory();
   const [open, setOpen] = useState(false);
 
   //edit dialog actions
@@ -85,14 +74,29 @@ function Row(props) {
   };
 
   //delete dialog actions
+  const [selectedQn, setSelectedQn] = useState(false);
+  const handleSelectQn = (question) => {
+    setSelectedQn(question);
+  };
+
+  const deleteQuestion = async (id) => {
+    const res = await trackPromise(
+      questionService.deleteQuestion(id)
+    );
+    if (res.status === 201) {
+      history.go(0);
+    }
+  };
+
   const [openDelete, setOpenDelete] = useState(false);
-  const handleClickDelete = () => {
+  const handleClickDelete = (question) => {
+    handleSelectQn(question);
     setOpenDelete(true);
   };
   const handleDialogResult = (continueAction) => {
     setOpenDelete(false);
     if (continueAction) {
-        //complete action
+      deleteQuestion(selectedQn._id);
     }
   };
 
@@ -100,7 +104,7 @@ function Row(props) {
 
   return (
     <React.Fragment>
-    <TableRow tabIndex={-1} key={row.i} >
+    <TableRow tabIndex={-1} key={row._id} >
       <TableCell>
         <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
           {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -123,7 +127,7 @@ function Row(props) {
         />
       )}
       <TableCell align="right">
-        <IconButton aria-label="expand row" size="small" onClick={handleClickDelete}>
+        <IconButton aria-label="expand row" size="small" onClick={() => handleClickDelete(row)}>
           <DeleteIcon />
         </IconButton>
       </TableCell>
@@ -162,8 +166,11 @@ function Row(props) {
   )
 };
 
-export default function QuestionTable() {
+export default function QuestionTable(props) {
   const classes = useStyles();
+
+  const { questions } = props;
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -197,8 +204,8 @@ export default function QuestionTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-              <Row key={row.name} row={row} />
+            {questions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((question) => (
+              <Row key={question.name} row={question} />
             ))}
           </TableBody>
         </Table>
@@ -206,7 +213,7 @@ export default function QuestionTable() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={rows.length}
+        count={questions.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}

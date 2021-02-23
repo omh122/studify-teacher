@@ -28,11 +28,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   paddedTop: {
-    paddingTop: theme.spacing(20),
+    paddingTop: theme.spacing(2),
   },
   paper: {
+    height: '100%',
     padding: theme.spacing(1),
-    overflow: 'auto',
+    // overflow: 'auto',
   },
 }));
 
@@ -43,7 +44,7 @@ const DialogContent = withStyles((theme) => ({
     // padding: theme.spacing(3),
     border: 'none',
     display: 'flex',
-    alignItems: 'center',
+    // alignItems: 'center',
     // maxHeight: '60vh',
     overflowY: 'auto',
   },
@@ -125,18 +126,18 @@ export default function ViewAssignmentPopup(props) {
   const { assignment, parentCallback } = props;
   const classes = useStyles();
 
-    // setting questions for the assignment
-    const [qns, setQns] = useState([]);
+    // // setting questions for the assignment
+    // const [qns, setQns] = useState([]);
 
-    const setQnData = () => {
-      for (let i = 0; i < assignment.questions.length; i += 1) {
-        setQns((qns) => [...qns, rows[assignment.questions[i]]]);
-      }
-    };
+    // const setQnData = () => {
+    //   for (let i = 0; i < assignment.questions.length; i += 1) {
+    //     setQns((qns) => [...qns, rows[assignment.questions[i]]]);
+    //   }
+    // };
 
-    useEffect(() => {
-      setQnData();
-    }, []);
+    // useEffect(() => {
+    //   setQnData();
+    // }, []);
 
   //DIALOG ACTIONS
   const handleClose = () => {
@@ -158,12 +159,12 @@ export default function ViewAssignmentPopup(props) {
         <DialogTitle id="assignmentPopup">
           {assignment.name}
         </DialogTitle>
-        <DialogContent dividers className={classes.paddedTop}>
+        <DialogContent dividers>
         <Paper className={classes.paper}>
           <TableContainer>
             <Table stickyHeader aria-label="sticky table" >
               <TableBody>
-                {qns.map((row) => (
+                {assignment.questions.map((row) => (
                   <Row key={row.question} row={row} />
                 ))}
               </TableBody>

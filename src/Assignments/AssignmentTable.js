@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -28,22 +28,6 @@ const columns = [
   { id: 'delete_icon', label: ' ' },
   { id: 'share_icon', label: ' ' },
 ];
-
-const test_data = [
-  [0, 'Assignment 1', [0, 1, 2]],
-  [1, 'Assignment 2', [0, 2, 1]],
-  [2, 'Assignment 3', [2, 1, 0]],
-];
-
-function createData(i, name, questions) {
-  return { i, name, questions };
-}
-
-const rows = []
-
-for (let i = 0; i < test_data.length; i += 1) {
-  rows.push(createData(...test_data[i]));
-}
 
 const useStyles = makeStyles({
   root: {
@@ -93,9 +77,9 @@ function Row(props) {
 
   return (
     <React.Fragment>
-    <TableRow hover role="checkbox" tabIndex={-1} key={row.i} >
+    <TableRow hover role="checkbox" tabIndex={-1} key={row._id} >
       <TableCell onClick={handleCLickRow}>{row.name}</TableCell>
-      <TableCell onClick={handleCLickRow} align="right">{row.i}</TableCell>
+      <TableCell onClick={handleCLickRow} align="right">{row._id}</TableCell>
       {openAssignment && (
         <ViewAssignmentPopup assignment={row} parentCallback={handleCloseRow} />
       )}
@@ -136,8 +120,17 @@ function Row(props) {
   )
 };
 
-export default function AssignmentTable() {
+export default function AssignmentTable(props) {
   const classes = useStyles();
+
+  const { assignments } = props;
+
+  // useEffect(() => {
+  //   for (let i = 0; i < assignments.length; i += 1) {
+  //     rows.push(createData(...assignments[i]));
+  //   }
+  // }, []);
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -171,8 +164,8 @@ export default function AssignmentTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-              <Row key={row.name} row={row} />
+            {assignments.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((assignment) => (
+              <Row key={assignment.name} row={assignment} />
             ))}
           </TableBody>
         </Table>
@@ -180,7 +173,7 @@ export default function AssignmentTable() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={rows.length}
+        count={assignments.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}

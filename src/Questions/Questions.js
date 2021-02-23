@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import QuestionTable from './QuestionTable';
@@ -8,6 +8,8 @@ import Filter from '../Components/Filter';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import QuestionPopup from './QuestionPopup';
+import questionService from '../services/questions';
+import { trackPromise } from 'react-promise-tracker';
 
 const useStyles = makeStyles((theme) => ({
   paddedItem: {
@@ -32,6 +34,17 @@ function Questions() {
     setOpen(false);
   };
 
+  const [questions, setQuestions] = useState([]);
+
+  // fetch data
+  useEffect(() => {
+    async function fetchData() {
+      const res = await trackPromise(questionService.getQuestions());
+      setQuestions(res.data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <div>
         <Typography  className={classes.paddedItem} variant="h3">
@@ -51,7 +64,7 @@ function Questions() {
             </Fab>
             </Grid>
             <Grid item xs={12}>
-            <QuestionTable />
+            <QuestionTable questions={questions}/>
             </Grid>
         </Grid>
 

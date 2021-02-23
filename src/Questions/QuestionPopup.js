@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -14,6 +15,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import CheckIcon from '@material-ui/icons/Check';
 import ToggleButton from '@material-ui/lab/ToggleButton';
+import questionService from '../services/questions';
+import { trackPromise } from 'react-promise-tracker';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -66,7 +69,9 @@ const DialogContent = withStyles((theme) => ({
 export default function QuestionPopup(props) {
   const { parentCallback, type, row } = props;
   const classes = useStyles();
+  const history = useHistory();
   const [values, setValues] = useState({
+    id: typeof row !== 'undefined' ? row._id : '',
     question: typeof row !== 'undefined' ? row.question : '',
     category: typeof row !== 'undefined' ? row.category : '',
     difficulty: typeof row !== 'undefined' ? row.difficulty : '',
@@ -83,6 +88,38 @@ export default function QuestionPopup(props) {
   const [selected3, setSelected3] = useState(typeof row !== 'undefined' ? (row.options[2]===row.answer ? true : false) : false);
   const [selected4, setSelected4] = useState(typeof row !== 'undefined' ? (row.options[3]===row.answer ? true : false) : false);
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const newQn = {
+      "question": values.question,
+      "category": values.category,
+      "difficulty": values.difficulty,
+      "options":[
+        values.option1,
+        values.option2,
+        values.option3,
+        values.option4
+      ],
+      "answer": answer
+    }
+
+    let res;
+    if (type === 'add') {
+      res = await trackPromise(questionService.addQuestion(newQn));
+    } else if (type === 'edit') {
+      res = await trackPromise(questionService.updateQuestion(values.id, newQn));
+    }
+    console.log(res.status);
+    if (res.status === 201) {
+      history.go(0);
+      handleClose();
+    } else {
+      alert("Error :(");
+    }
+    
+  };
+
   //DIALOG ACTIONS
   const handleClose = () => {
     parentCallback();
@@ -92,26 +129,30 @@ export default function QuestionPopup(props) {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const handleAnswer = () => {
-    // need to add async
+  //handle answer selection
+  useEffect(() => {
     if (selected1) {
       setAnswer(values.option1);
-     } else if (selected2) {
+     } 
+  }, [selected1]);
+
+  useEffect(() => {
+    if (selected2) {
       setAnswer(values.option2);
-     } else if (selected3) {
+     } 
+  }, [selected2]);
+
+  useEffect(() => {
+    if (selected3) {
       setAnswer(values.option3);
-     } else {
+     } 
+  }, [selected3]);
+
+  useEffect(() => {
+    if (selected4) {
       setAnswer(values.option4);
-     }
-  }
-
-  const addQuestion = (event) => {
-   handleAnswer();
-   //todo
-   console.log("question added");
-   parentCallback();
-
-  };
+     } 
+  }, [selected4]);
 
   return (
     <>
@@ -231,7 +272,7 @@ export default function QuestionPopup(props) {
                   </FormControl>
                   </Grid>
                   <Grid item xs={2} align='center' justify='center'>
-                  <ToggleButton size="small" value='option4' selected={selected4} onChange={() => {setSelected4(!selected4); setSelected1(false); setSelected1(false); setSelected3(false);}}>
+                  <ToggleButton size="small" value='option4' selected={selected4} onChange={() => {setSelected4(!selected4); setSelected1(false); setSelected2(false); setSelected3(false);}}>
                     <CheckIcon />
                   </ToggleButton>
                   </Grid>
@@ -243,7 +284,7 @@ export default function QuestionPopup(props) {
           <Button className={classes.actionButton} onClick={handleClose}>
             Cancel
           </Button>
-          <Button className={classes.actionButton} variant="contained" color="secondary" onClick={addQuestion}>
+          <Button className={classes.actionButton} variant="contained" color="secondary" onClick={handleSubmit}>
             Confirm
           </Button>
         </DialogActions>
