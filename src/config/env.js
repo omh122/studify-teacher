@@ -7,6 +7,8 @@ const envConfig = {
   endpoints: {
     questions: 'questions',
     assignments: 'assignments',
+    students: 'students',
+    resources: 'resources',
   },
 };
 

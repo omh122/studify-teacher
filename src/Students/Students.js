@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import StudentTable from './StudentTable';
@@ -7,6 +7,8 @@ import SearchBar from '../Components/SearchBar';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import StudentPopup from './StudentPopup';
+import studentService from '../services/students';
+import { trackPromise } from 'react-promise-tracker';
 
 const useStyles = makeStyles((theme) => ({
   paddedItem: {
@@ -28,6 +30,18 @@ function Students() {
     setOpen(false);
   };
 
+  // fetch student data
+  const [students, setStudents] = useState([]);
+
+  // fetch data
+  useEffect(() => {
+    async function fetchData() {
+      const res = await trackPromise(studentService.getStudents());
+      setStudents(res.data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <div>
         <Typography  className={classes.paddedItem} variant="h3">
@@ -45,7 +59,7 @@ function Students() {
             </Fab>
             </Grid>
             <Grid item xs={12}>
-            <StudentTable />
+            <StudentTable students={students}/>
             </Grid>
         </Grid>
 

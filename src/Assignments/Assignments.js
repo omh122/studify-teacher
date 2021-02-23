@@ -9,6 +9,7 @@ import AddIcon from '@material-ui/icons/Add';
 import AssignmentPopup from './AssignmentPopup';
 import assignmentService from '../services/assignments';
 import { trackPromise } from 'react-promise-tracker';
+import questionService from '../services/questions';
 
 const useStyles = makeStyles((theme) => ({
   paddedItem: {
@@ -20,8 +21,6 @@ const useStyles = makeStyles((theme) => ({
 function Assignments() {
   const classes = useStyles();
 
-  const [assignments, setAssignments] = useState([]);
-
   // add assignment dialog 
   const [open, setOpen] = useState(false);
 
@@ -32,11 +31,22 @@ function Assignments() {
     setOpen(false);
   };
 
-  // fetch data
+  // fetch assignment data
+  const [assignments, setAssignments] = useState([]);
   useEffect(() => {
     async function fetchData() {
       const res = await trackPromise(assignmentService.getAssignments());
       setAssignments(res.data);
+    }
+    fetchData();
+  }, []);
+
+  // fetch question bank data
+  const [questions, setQuestions] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const res = await trackPromise(questionService.getQuestions());
+      setQuestions(res.data);
     }
     fetchData();
   }, []);
@@ -58,7 +68,7 @@ function Assignments() {
             </Fab>
             </Grid>
             <Grid item xs={12}>
-            <AssignmentTable assignments={assignments}/>
+            <AssignmentTable assignments={assignments} questionbank={questions}/>
             </Grid>
         </Grid>
 
@@ -67,6 +77,7 @@ function Assignments() {
           //callback
           parentCallback={handleClose}
           type="add"
+          questionbank={questions}
         />
         )}
 

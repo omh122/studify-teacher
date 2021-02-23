@@ -18,6 +18,9 @@ import ResponsivePlayer from '../Components/ResponsivePlayer';
 import Collapse from '@material-ui/core/Collapse';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import resourceService from '../services/resources';
+import { trackPromise } from 'react-promise-tracker';
+import { useHistory } from 'react-router-dom';
 
 const columns = [
   { id: 'expand_icon', label: ' ' },
@@ -41,21 +44,6 @@ const columns = [
   { id: 'delete_icon', label: ' ' },
 ];
 
-const test_data = [
-  [0, 'Introduction to Sudify', 'Introduction', 'Easy', 'https://youtu.be/Gm9SJcbf6O0'],
-  [1, 'Introduction to SDLC', 'Introduction', 'Medium', 'https://youtu.be/UhbTBkHvyp4'],
-  [2, 'How to analyse your SDLC', 'Analysis', 'Hard', 'https://youtu.be/CsDu33tVvlE'],
-];
-
-function createData(i, name, category, difficulty, url) {
-  return { i, name, category, difficulty, url };
-}
-
-const rows = []
-
-for (let i = 0; i < test_data.length; i += 1) {
-  rows.push(createData(...test_data[i]));
-}
 const useStyles = makeStyles({
   root: {
     width: '100%',
@@ -75,6 +63,7 @@ const useRowStyles = makeStyles({
 
 function Row(props) {
   const { row } = props;
+  const history = useHistory();
   const [open, setOpen] = useState(false);
 
   //edit dialog actions
@@ -86,18 +75,32 @@ function Row(props) {
     setOpenEdit(false);
   };
 
-  //delete dialog actions
+  // delete dialog actions
+  const [selected, setSelected] = useState(false);
+  const handleSelect = (resource) => {
+   setSelected(resource);
+  };
+
+  const deleteResource = async (id) => {
+    const res = await trackPromise(
+      resourceService.deleteResource(id)
+    );
+    if (res.status === 201) {
+      history.go(0);
+    }
+  };
+
   const [openDelete, setOpenDelete] = useState(false);
-  const handleClickDelete = () => {
+  const handleClickDelete = (resource) => {
+   handleSelect(resource);
     setOpenDelete(true);
   };
   const handleDialogResult = (continueAction) => {
     setOpenDelete(false);
     if (continueAction) {
-        //complete action
+      deleteResource(selected._id);
     }
   };
-
   const classes = useRowStyles();
 
   return (
@@ -126,7 +129,7 @@ function Row(props) {
         />
       )}
       <TableCell align="right">
-        <IconButton aria-label="expand row" size="small" onClick={handleClickDelete}>
+        <IconButton aria-label="expand row" size="small" onClick={()=>handleClickDelete(row)}>
           <DeleteIcon />
         </IconButton>
       </TableCell>
@@ -160,7 +163,8 @@ function Row(props) {
   )
 };
 
-export default function ResourceTable() {
+export default function ResourceTable(props) {
+  const { resources } = props;
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -195,8 +199,8 @@ export default function ResourceTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-              <Row key={row.name} row={row} />
+            {resources.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((resource) => (
+              <Row key={resource.name} row={resource} />
             ))}
           </TableBody>
         </Table>
@@ -204,7 +208,7 @@ export default function ResourceTable() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={rows.length}
+        count={resources.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}

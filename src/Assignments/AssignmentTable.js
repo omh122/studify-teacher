@@ -15,6 +15,9 @@ import ShareIcon from '@material-ui/icons/Share';
 import ViewAssignmentPopup from './ViewAssignmentPopup';
 import AssignmentPopup from './AssignmentPopup';
 import ConfirmationDialog from '../Components/ConfirmationDialog';
+import assignmentService from '../services/assignments';
+import { trackPromise } from 'react-promise-tracker';
+import { useHistory } from 'react-router-dom';
 
 const columns = [
   { id: 'name', label: 'Assignment', minWidth: 200 },
@@ -39,7 +42,8 @@ const useStyles = makeStyles({
 });
 
 function Row(props) {
-  const { row } = props;
+  const { row, questionbank } = props;
+  const history = useHistory();
   const [open, setOpen] = useState(false);
 
   const [openAssignment, setopenAssignment] = useState(false);
@@ -62,18 +66,32 @@ function Row(props) {
     setOpenEdit(false);
   };
 
-  //delete dialog actions
-  const [openDelete, setOpenDelete] = useState(false);
-  
-  const handleClickDelete = () => {
-    setOpenDelete(true);
-  };
-  const handleDialogResult = (continueAction) => {
-    setOpenDelete(false);
-    if (continueAction) {
-        //complete action
-    }
-  };
+   // delete dialog actions
+   const [selected, setSelected] = useState(false);
+   const handleSelect = (assignment) => {
+    setSelected(assignment);
+   };
+ 
+   const deleteAssignment = async (id) => {
+     const res = await trackPromise(
+      assignmentService.deleteAssignment(id)
+     );
+     if (res.status === 201) {
+       history.go(0);
+     }
+   };
+ 
+   const [openDelete, setOpenDelete] = useState(false);
+   const handleClickDelete = (assignment) => {
+    handleSelect(assignment);
+     setOpenDelete(true);
+   };
+   const handleDialogResult = (continueAction) => {
+     setOpenDelete(false);
+     if (continueAction) {
+      deleteAssignment(selected._id);
+     }
+   };
 
   return (
     <React.Fragment>
@@ -94,11 +112,12 @@ function Row(props) {
           parentCallback={handleCloseEdit}
           type="edit"
           assignment={row}
+          questionbank={questionbank}
         />
         )}
 
       <TableCell align="right">
-        <IconButton aria-label="expand row" size="small" onClick={handleClickDelete}>
+        <IconButton aria-label="expand row" size="small" onClick={()=>handleClickDelete(row)}>
           <DeleteIcon />
         </IconButton>
       </TableCell>
@@ -123,7 +142,7 @@ function Row(props) {
 export default function AssignmentTable(props) {
   const classes = useStyles();
 
-  const { assignments } = props;
+  const { assignments, questionbank } = props;
 
   // useEffect(() => {
   //   for (let i = 0; i < assignments.length; i += 1) {
@@ -165,7 +184,7 @@ export default function AssignmentTable(props) {
           </TableHead>
           <TableBody>
             {assignments.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((assignment) => (
-              <Row key={assignment.name} row={assignment} />
+              <Row key={assignment.name} row={assignment} questionbank={questionbank}/>
             ))}
           </TableBody>
         </Table>

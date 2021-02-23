@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchBar from '../Components/SearchBar';
@@ -8,6 +8,8 @@ import ResourceTable from './ResourceTable';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import ResourcePopup from './ResourcePopup';
+import resourceService from '../services/resources';
+import { trackPromise } from 'react-promise-tracker';
 
 const useStyles = makeStyles((theme) => ({
   paddedItem: {
@@ -32,6 +34,16 @@ function Resources() {
     setOpen(false);
   };
 
+  // fetch resource data
+  const [resources, setResources] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const res = await trackPromise(resourceService.getResources());
+      setResources(res.data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <div>
         <Typography  className={classes.paddedItem} variant="h3">
@@ -51,7 +63,7 @@ function Resources() {
             </Fab>
             </Grid>
             <Grid item xs={12}>
-            <ResourceTable />
+            <ResourceTable resources={resources}/>
             </Grid>
         </Grid>
         

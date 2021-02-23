@@ -11,6 +11,9 @@ import TableRow from '@material-ui/core/TableRow';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ConfirmationDialog from '../Components/ConfirmationDialog';
+import studentService from '../services/students';
+import { trackPromise } from 'react-promise-tracker';
+import { useHistory } from 'react-router-dom';
 
 const columns = [
   { id: 'name', label: 'Student', minWidth: 200 },
@@ -27,30 +30,6 @@ const columns = [
   { id: 'delete_icon', label: ' ' },
 ];
 
-const test_data = [
-  ['Wong Xiaoqing', 'U1822123C', 'SSP1'],
-  ['Ooi Min Hui', 'U1822023F', 'SSP2'],
-  ['Phoe Chuan Bin', 'U1822345A', 'SSP3'],
-  ['Chen Gangzhe', 'U1822146B', 'SSP4'],
-  ['Deng Jinyang', 'U1822143D', 'SSP1'],
-  ['Wong Wei Jie', 'U1822423E', 'SSP2'],
-  ['Derry Tan', 'U1822521A', 'SSP3'],
-  ['Ng Jiayu', 'U1822301A', 'SSP4'],
-  ['Tan Tan', 'U1821002C', 'SSP1'],
-  ['Milky', 'U1821922D', 'SSP2'],
-  ['Boki', 'U1820141A', 'SSP3'],
-];
-
-function createData(name, id, group) {
-  return { name, id, group };
-}
-
-const rows = []
-
-for (let i = 0; i < test_data.length; i += 1) {
-  rows.push(createData(...test_data[i]));
-}
-
 const useStyles = makeStyles({
   root: {
     width: '100%',
@@ -62,18 +41,33 @@ const useStyles = makeStyles({
 
 function Row(props) {
   const { row } = props;
+  const history = useHistory();
   const [open, setOpen] = useState(false);
 
-  //delete dialog actions
+  // delete dialog actions
+  const [selected, setSelected] = useState(false);
+  const handleSelect = (student) => {
+   setSelected(student);
+  };
+
+  const deleteStudent = async (id) => {
+    const res = await trackPromise(
+      studentService.deleteStudent(id)
+    );
+    if (res.status === 201) {
+      history.go(0);
+    }
+  };
+
   const [openDelete, setOpenDelete] = useState(false);
-  
-  const handleClickDelete = () => {
+  const handleClickDelete = (student) => {
+   handleSelect(student);
     setOpenDelete(true);
   };
   const handleDialogResult = (continueAction) => {
     setOpenDelete(false);
     if (continueAction) {
-        //complete action
+      deleteStudent(selected._id);
     }
   };
 
@@ -81,10 +75,10 @@ function Row(props) {
     <React.Fragment>
     <TableRow tabIndex={-1} key={row.i} >
       <TableCell>{row.name}</TableCell>
-      <TableCell>{row.id}</TableCell>
-      <TableCell>{row.group}</TableCell>
+      <TableCell>{row.matricNo}</TableCell>
+      <TableCell>{row.tutorialGrp}</TableCell>
       <TableCell align="right">
-        <IconButton aria-label="expand row" size="small" onClick={handleClickDelete}>
+        <IconButton aria-label="expand row" size="small" onClick={()=>handleClickDelete(row)}>
           <DeleteIcon />
         </IconButton>
       </TableCell>
@@ -101,7 +95,8 @@ function Row(props) {
   )
 };
 
-export default function AssignmentTable() {
+export default function StudentTable(props) {
+  const { students } = props;
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -136,8 +131,8 @@ export default function AssignmentTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-              <Row key={row.name} row={row} />
+            {students.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((student) => (
+              <Row key={student.name} row={student} />
             ))}
           </TableBody>
         </Table>
@@ -145,7 +140,7 @@ export default function AssignmentTable() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={rows.length}
+        count={students.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}

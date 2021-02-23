@@ -63,22 +63,6 @@ const DialogContent = withStyles((theme) => ({
   },
 }))(MuiDialogContent);
 
-const test_data = [
-  [0, 'What is the name of this course?', 'Introduction', 'Easy', ['CZ3001', 'CZ3002', 'CZ3003', 'CZ3004'], 'CZ3003'],
-  [1, 'What is the name of this game?', 'Introduction', 'Medium', ['Studify', 'Study Game', 'Minesweeper', 'Poker'], 'Studify'],
-  [2, 'What is the name of the course coordinatpr?', 'Introduction', 'Hard', ['Chuan Bin', 'Gang Zhe', 'Xiaoqing', 'Min Hui'], 'Xiaoqing'],
-];
-
-function createData(i, question, category, difficulty, options, answer) {
-  return { i, question, category, difficulty, options, answer };
-}
-
-const rows = []
-
-for (let i = 0; i < test_data.length; i += 1) {
-  rows.push(createData(...test_data[i]));
-}
-
 const useRowStyles = makeStyles({
   root: {
     '& > *': {

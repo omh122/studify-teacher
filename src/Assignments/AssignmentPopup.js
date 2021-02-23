@@ -16,6 +16,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FilterCategory from './FilterCategory';
 import FilterDifficulty from './FilterDifficulty';
 import Typography from '@material-ui/core/Typography';
+import assignmentService from '../services/assignments';
+import { trackPromise } from 'react-promise-tracker';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,38 +69,25 @@ const DialogContent = withStyles((theme) => ({
   },
 }))(MuiDialogContent);
 
-const test_data = [
-  [0, 'What is the name of this course?', 'Introduction', 'Easy', ['CZ3001', 'CZ3002', 'CZ3003', 'CZ3004'], 'CZ3003'],
-  [1, 'What is the name of this game?', 'Introduction', 'Medium', ['Studify', 'Study Game', 'Minesweeper', 'Poker'], 'Studify'],
-  [2, 'What is the name of the course coordinatpr?', 'Introduction', 'Hard', ['Chuan Bin', 'Gang Zhe', 'Xiaoqing', 'Min Hui'], 'Xiaoqing'],
-];
-
-function createData(i, question, category, difficulty, options, answer) {
-  return { i, question, category, difficulty, options, answer };
-}
-
-const question_bank = []
-
-for (let i = 0; i < test_data.length; i += 1) {
-    question_bank.push(createData(...test_data[i]));
-}
-
 // question list function
 function not(a, b) {
     return a.filter((value) => b.indexOf(value) === -1);
 }
 
-export default function ViewAssignmentPopup(props) {
-  const { assignment, parentCallback, type } = props;
+export default function AssignmentPopup(props) {
+  const { assignment, questionbank, parentCallback, type } = props;
   const classes = useStyles();
-
+  const history = useHistory();
   function setFilterViews() {
     //todo
   }
 
-  // setting assignment values (name and array of qns)
+  // setting assignment values (name, id)
   const [name, setName] = useState(
     typeof assignment !== 'undefined' ? assignment.name : '',
+  );
+  const [id, setID] = useState(
+    typeof assignment !== 'undefined' ? assignment._id : '',
   );
 
   //DIALOG ACTIONS
@@ -109,14 +99,43 @@ export default function ViewAssignmentPopup(props) {
     setName(event.target.value);
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    let questionids = [];
+    for (let i = 0; i < right.length; i += 1) {
+      questionids.push(right[i]._id);
+    }
+
+    const newAssignment = {
+      "name": name,
+      "questionIds": questionids,
+    }
+
+    let res;
+    if (type === 'add') {
+      res = await trackPromise(assignmentService.addAssignment(newAssignment));
+    } else if (type === 'edit') {
+      res = await trackPromise(assignmentService.updateAssignment(id, newAssignment));
+    }
+    console.log(res.status);
+    if (res.status === 201) {
+      history.go(0);
+      handleClose();
+    } else {
+      alert("Error :(");
+    }
+    
+  };
+
   // list of questions
-  const [left, setLeft] = useState(
-    typeof assignment !== 'undefined' ? not(question_bank, assignment.questions) : question_bank
-  );
   const [right, setRight] = useState(
     typeof assignment !== 'undefined' ? assignment.questions : []
   );
-
+  const [left, setLeft] = useState(    
+    typeof assignment !== 'undefined' ? not(questionbank, assignment.questions) : questionbank
+  );
+  
   const handleRight = (value) => {
     setRight(right.concat([value]));
     setLeft(not(left, [value]));
@@ -192,7 +211,7 @@ export default function ViewAssignmentPopup(props) {
           <Button className={classes.actionButton} onClick={handleClose}>
             Cancel
           </Button>
-          <Button className={classes.actionButton} variant="contained" color="secondary" onClick={handleClose}>
+          <Button className={classes.actionButton} variant="contained" color="secondary" onClick={handleSubmit}>
             Confirm
           </Button>
         </DialogActions>

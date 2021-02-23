@@ -11,6 +11,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import resourceService from '../services/resources';
+import { trackPromise } from 'react-promise-tracker';
+import { useHistory } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -63,7 +66,9 @@ const DialogContent = withStyles((theme) => ({
 export default function ResourcePopup(props) {
   const { parentCallback, type, row } = props;
   const classes = useStyles();
+  const history = useHistory();
   const [values, setValues] = useState({
+    id: typeof row !== 'undefined' ? row._id : '',
     name: typeof row !== 'undefined' ? row.name : '',
     category: typeof row !== 'undefined' ? row.category : '',
     difficulty: typeof row !== 'undefined' ? row.difficulty : '',
@@ -79,10 +84,30 @@ export default function ResourcePopup(props) {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const addResource = (event) => {
-   //todo
-   parentCallback();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
+    const newResource = {
+      "name": values.name,
+      "category": values.category,
+      "difficulty": values.difficulty,
+      "url": values.url,
+    }
+
+    let res;
+    if (type === 'add') {
+      res = await trackPromise(resourceService.addResource(newResource));
+    } else if (type === 'edit') {
+      res = await trackPromise(resourceService.updateResource(values.id, newResource));
+    }
+    console.log(res.status);
+    if (res.status === 201) {
+      history.go(0);
+      handleClose();
+    } else {
+      alert("Error :(");
+    }
+    
   };
 
   return (
@@ -161,7 +186,7 @@ export default function ResourcePopup(props) {
           <Button className={classes.actionButton} onClick={handleClose}>
             Cancel
           </Button>
-          <Button className={classes.actionButton} variant="contained" color="secondary" onClick={addResource}>
+          <Button className={classes.actionButton} variant="contained" color="secondary" onClick={handleSubmit}>
             Confirm
           </Button>
         </DialogActions>
