@@ -71,7 +71,7 @@ const DialogContent = withStyles((theme) => ({
 
 // question list function
 function not(a, b) {
-    return a.filter((value) => b.indexOf(value) === -1);
+    return a.filter((value) => JSON.stringify(b).indexOf(JSON.stringify(value)) === -1);
 }
 
 export default function AssignmentPopup(props) {
