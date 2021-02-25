@@ -140,9 +140,10 @@ export default function AssignmentPopup(props) {
   const [rightCount, setRightCount] = useState(
     typeof assignment !== 'undefined' ? assignment.questions.length : 0
   );
+  const qnCount = 5;
   
   const handleRight = (value) => {
-    if (rightCount < 5) {
+    if (rightCount < qnCount) {
       setRight(right.concat([value]));
       setLeft(not(left, [value]));
       setRightCount(rightCount+1);
@@ -211,7 +212,7 @@ export default function AssignmentPopup(props) {
         </Grid>
         <Grid item xs={6}>
             <Typography paragraph className={classes.para}> Click on the questions on the left to add to the assignment. To remove, click on the question on the right.</Typography>
-            <Typography style={{display: 'flex', justifyContent: 'flex-end', paddingRight: 50}}>{rightCount}/5 selected</Typography>
+            <Typography style={{display: 'flex', justifyContent: 'flex-end', paddingRight: 50}}>{rightCount}/{qnCount} selected</Typography>
         </Grid>
         <Grid item xs={6}>{customList(left, 'left')}</Grid>
         <Grid item xs={6}>{customList(right, 'right')}</Grid>
