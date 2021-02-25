@@ -135,15 +135,24 @@ export default function AssignmentPopup(props) {
   const [left, setLeft] = useState(    
     typeof assignment !== 'undefined' ? not(questionbank, assignment.questions) : questionbank
   );
+
+  // count of selected questions
+  const [rightCount, setRightCount] = useState(
+    typeof assignment !== 'undefined' ? assignment.questions.length : 0
+  );
   
   const handleRight = (value) => {
-    setRight(right.concat([value]));
-    setLeft(not(left, [value]));
+    if (rightCount < 5) {
+      setRight(right.concat([value]));
+      setLeft(not(left, [value]));
+      setRightCount(rightCount+1);
+    } // insert snackbar if max hit?
   };
 
   const handleLeft = (value) => {
     setLeft(left.concat([value]));
     setRight(not(right, [value]));
+    setRightCount(rightCount-1);
   };
 
   const customList = (items, type) => (
@@ -202,6 +211,7 @@ export default function AssignmentPopup(props) {
         </Grid>
         <Grid item xs={6}>
             <Typography paragraph className={classes.para}> Click on the questions on the left to add to the assignment. To remove, click on the question on the right.</Typography>
+            <Typography style={{display: 'flex', justifyContent: 'flex-end', paddingRight: 50}}>{rightCount}/5 selected</Typography>
         </Grid>
         <Grid item xs={6}>{customList(left, 'left')}</Grid>
         <Grid item xs={6}>{customList(right, 'right')}</Grid>
