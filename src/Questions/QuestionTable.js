@@ -39,7 +39,7 @@ const columns = [
     align: 'right',
   },
   { id: 'edit_icon', label: ' ' },
-  { id: 'delete_icon', label: ' ' },
+  // { id: 'delete_icon', label: ' ' },
 ];
 
 const useStyles = makeStyles({
@@ -74,31 +74,31 @@ function Row(props) {
   };
 
   //delete dialog actions
-  const [selectedQn, setSelectedQn] = useState(false);
-  const handleSelectQn = (question) => {
-    setSelectedQn(question);
-  };
+  // const [selectedQn, setSelectedQn] = useState(false);
+  // const handleSelectQn = (question) => {
+  //   setSelectedQn(question);
+  // };
 
-  const deleteQuestion = async (id) => {
-    const res = await trackPromise(
-      questionService.deleteQuestion(id)
-    );
-    if (res.status === 201) {
-      history.go(0);
-    }
-  };
+  // const deleteQuestion = async (id) => {
+  //   const res = await trackPromise(
+  //     questionService.deleteQuestion(id)
+  //   );
+  //   if (res.status === 201) {
+  //     history.go(0);
+  //   }
+  // };
 
-  const [openDelete, setOpenDelete] = useState(false);
-  const handleClickDelete = (question) => {
-    handleSelectQn(question);
-    setOpenDelete(true);
-  };
-  const handleDialogResult = (continueAction) => {
-    setOpenDelete(false);
-    if (continueAction) {
-      deleteQuestion(selectedQn._id);
-    }
-  };
+  // const [openDelete, setOpenDelete] = useState(false);
+  // const handleClickDelete = (question) => {
+  //   handleSelectQn(question);
+  //   setOpenDelete(true);
+  // };
+  // const handleDialogResult = (continueAction) => {
+  //   setOpenDelete(false);
+  //   if (continueAction) {
+  //     deleteQuestion(selectedQn._id);
+  //   }
+  // };
 
   const classes = useRowStyles();
 
@@ -126,7 +126,7 @@ function Row(props) {
           row={row}
         />
       )}
-      <TableCell align="right">
+      {/* <TableCell align="right">
         <IconButton aria-label="expand row" size="small" onClick={() => handleClickDelete(row)}>
           <DeleteIcon />
         </IconButton>
@@ -138,7 +138,7 @@ function Row(props) {
           content={"Confirm deletion of this question? This action cannot be undone."}
           parentCallback={handleDialogResult}
         />
-      )}
+      )} */}
     </TableRow>
     <TableRow className={classes.root}>
       <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={2}> 
