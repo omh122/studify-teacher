@@ -14,6 +14,8 @@ import ConfirmationDialog from '../Components/ConfirmationDialog';
 import studentService from '../services/students';
 import { trackPromise } from 'react-promise-tracker';
 import { useHistory } from 'react-router-dom';
+import StudentPopup from './StudentPopup';
+import EditIcon from '@material-ui/icons/Edit';
 
 const columns = [
   { id: 'name', label: 'Student', minWidth: 200 },
@@ -27,6 +29,7 @@ const columns = [
     label: 'Tutorial Group',
     minWidth: 100,
   },
+  { id: 'edit_icon', label: ' ' },
   { id: 'delete_icon', label: ' ' },
 ];
 
@@ -43,6 +46,15 @@ function Row(props) {
   const { row } = props;
   const history = useHistory();
   const [open, setOpen] = useState(false);
+
+  //edit dialog actions
+  const [openEdit, setOpenEdit] = useState(false);
+  const handleClickEdit = () => {
+    setOpenEdit(true);
+  };
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
 
   // delete dialog actions
   const [selected, setSelected] = useState(false);
@@ -77,6 +89,19 @@ function Row(props) {
       <TableCell>{row.name}</TableCell>
       <TableCell>{row.matricNo}</TableCell>
       <TableCell>{row.tutorialGrp}</TableCell>
+      <TableCell align="right">
+        <IconButton aria-label="expand row" size="small" onClick={handleClickEdit}>
+          <EditIcon />
+        </IconButton>
+      </TableCell>
+      {openEdit && (
+        <StudentPopup
+          //callback
+          parentCallback={handleCloseEdit}
+          type="edit"
+          row={row}
+        />
+      )}
       <TableCell align="right">
         <IconButton aria-label="expand row" size="small" onClick={()=>handleClickDelete(row)}>
           <DeleteIcon />

@@ -124,7 +124,7 @@ export default function StudentPopup(props) {
         marginBottom="5"
       >
         <DialogTitle id="studentPopup">
-          Add New Student
+          {type === 'add' ? 'Add New Student' : 'Edit Student Details'}
         </DialogTitle>
         <DialogContent dividers>
             <Grid container spacing={3}>

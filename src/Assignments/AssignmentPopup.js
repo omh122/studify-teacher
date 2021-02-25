@@ -23,14 +23,11 @@ import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   root: {
     position: 'relative',
-    padding: theme.spacing(3),
+    padding: theme.spacing(2),
   },
   actionButton: {
     display: 'inline-block',
     marginRight: theme.spacing(2),
-  },
-  paddedTop: {
-    paddingTop: theme.spacing(15),
   },
   paper: {
     width: 350,
@@ -212,7 +209,7 @@ export default function AssignmentPopup(props) {
         </Grid>
         <Grid item xs={6}>
             <Typography paragraph className={classes.para}> Click on the questions on the left to add to the assignment. To remove, click on the question on the right.</Typography>
-            <Typography style={{display: 'flex', justifyContent: 'flex-end', paddingRight: 50}}>{rightCount}/{qnCount} selected</Typography>
+            <Typography style={{display: 'flex', justifyContent: 'flex-end', paddingRight: 50}}><br/>{rightCount}/{qnCount} selected</Typography>
         </Grid>
         <Grid item xs={6}>{customList(left, 'left')}</Grid>
         <Grid item xs={6}>{customList(right, 'right')}</Grid>
