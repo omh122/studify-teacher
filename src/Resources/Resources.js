@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchBar from '../Components/SearchBar';
-import Filter from '../Components/Filter';
+import FilterCategory from '../Components/FilterCategory';
+import FilterDifficulty from '../Components/FilterDifficulty';
 import Grid from '@material-ui/core/Grid';
 import ResourceTable from './ResourceTable';
 import Fab from '@material-ui/core/Fab';
@@ -23,8 +24,15 @@ function Resources() {
 
   const [open, setOpen] = useState(false);
 
-  function setFilterViews() {
-    //todo
+  const [filterCat, setFilterCat] = useState([]);
+  const [filterDiff, setFilterDiff] = useState([]);
+
+  function setFilterViewsCat(settingsData) {
+    setFilterCat(settingsData);
+  }
+
+  function setFilterViewsDiff(settingsData) {
+    setFilterDiff(settingsData);
   }
 
   const handleClickOpen = () => {
@@ -35,14 +43,27 @@ function Resources() {
   };
 
   // fetch resource data
-  const [resources, setResources] = useState([]);
+  const [resourceBank, setResourceBank] = useState([]);
   useEffect(() => {
     async function fetchData() {
       const res = await trackPromise(resourceService.getResources());
       setResources(res.data);
+      setResourceBank(res.data);
     }
     fetchData();
   }, []);
+
+  // search actions
+  const [input, setInput] = useState('');
+  const [resources, setResources] = useState([]);
+
+  const updateInput = async (input) => {
+    const filtered = resourceBank.filter(resource => {
+     return resource.name.toLowerCase().includes(input.toLowerCase())
+    })
+    setInput(input);
+    setResources(filtered);
+ }
 
   return (
     <div>
@@ -50,21 +71,30 @@ function Resources() {
           Teaching Resources
         </Typography>
 
-        <Grid container spacing={2} className={classes.paddedItem} alignItems="center" justify="center">
-            <Grid item xs={4}>
-            <SearchBar />
-            </Grid>
-            <Grid item xs={7}>
-            <Filter parentCallback={setFilterViews} />
-            </Grid>
-            <Grid item xs={1}>
+        <Grid container spacing={2} className={classes.paddedItem}>
+          <Grid item xs={4}>
+            <SearchBar query={input} setQuery={updateInput}/>
+          </Grid>
+          <Grid item xs={3}>
+            <FilterDifficulty  parentCallback={setFilterViewsDiff} />
+          </Grid>
+          <Grid item xs={4}>
+            <FilterCategory parentCallback={setFilterViewsCat} />
+          </Grid>
+          <Grid item xs={1}>
             <Fab aria-label="add" onClick={handleClickOpen}>
               <AddIcon />
             </Fab>
-            </Grid>
-            <Grid item xs={12}>
-            <ResourceTable resources={resources}/>
-            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <ResourceTable resources={
+              filterDiff.length === 0 ? 
+                filterCat.length === 0 ? 
+                resources : resources.filter((resource) => filterCat.includes(resource.category)) : 
+                filterCat.length === 0 ? 
+                resources.filter((resource) => filterDiff.includes(resource.difficulty)) : resources.filter((resource) => filterCat.includes(resource.category) && filterDiff.includes(resource.difficulty))  
+            }/>
+          </Grid>
         </Grid>
         
         {open && (

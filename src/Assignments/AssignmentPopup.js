@@ -13,8 +13,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
-import FilterCategory from './FilterCategory';
-import FilterDifficulty from './FilterDifficulty';
+import FilterCategory from '../Components/FilterCategory';
+import FilterDifficulty from '../Components/FilterDifficulty';
 import Typography from '@material-ui/core/Typography';
 import assignmentService from '../services/assignments';
 import { trackPromise } from 'react-promise-tracker';
@@ -75,8 +75,17 @@ export default function AssignmentPopup(props) {
   const { assignment, questionbank, parentCallback, type } = props;
   const classes = useStyles();
   const history = useHistory();
-  function setFilterViews() {
-    //todo
+
+  // filter qn bank actions
+  const [filterCat, setFilterCat] = useState([]);
+  const [filterDiff, setFilterDiff] = useState([]);
+
+  function setFilterViewsCat(settingsData) {
+    setFilterCat(settingsData);
+  }
+
+  function setFilterViewsDiff(settingsData) {
+    setFilterDiff(settingsData);
   }
 
   // setting assignment values (name, id)
@@ -204,14 +213,21 @@ export default function AssignmentPopup(props) {
             <Typography variant="h6"> <b>Assignment Questions</b></Typography>
         </Grid>
         <Grid item xs={6} className={classes.filter}>
-          <FilterCategory parentCallback={setFilterViews}/>
-          <FilterDifficulty parentCallback={setFilterViews}/>
+          <FilterCategory parentCallback={setFilterViewsCat}/>
+          <FilterDifficulty parentCallback={setFilterViewsDiff}/>
         </Grid>
         <Grid item xs={6}>
             <Typography paragraph className={classes.para}> Click on the questions on the left to add to the assignment. To remove, click on the question on the right.</Typography>
             <Typography style={{display: 'flex', justifyContent: 'flex-end', paddingRight: 50}}><br/>{rightCount}/{qnCount} selected</Typography>
         </Grid>
-        <Grid item xs={6}>{customList(left, 'left')}</Grid>
+        <Grid item xs={6}>{
+          filterDiff.length === 0 ? 
+            filterCat.length === 0 ? 
+              customList(left, 'left') :  customList(left.filter((question) => filterCat.includes(question.category)), 'left') : 
+              filterCat.length === 0 ? 
+            customList(left.filter((question) => filterDiff.includes(question.difficulty)), 'left') : 
+          customList(left.filter((question) => filterCat.includes(question.category) && filterDiff.includes(question.difficulty)) , 'left')
+       }</Grid>
         <Grid item xs={6}>{customList(right, 'right')}</Grid>
         </Grid>
         </DialogContent>

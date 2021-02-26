@@ -4,12 +4,15 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
-    position: 'relative',
+    flexGrow: 1,
+    width: '90%',
+    maxWidth: 1500,
+    margin: 'auto',
+    paddingBottom: theme.spacing(1.5),
   },
   iconButton: {
     padding: 0,
@@ -18,9 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchBar(props) {
   const classes = useStyles();
-  const [query, setQuery] = useState('');
-  const { searchCallback } = props;
-
+  const { query, setQuery } = props;
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);
@@ -38,12 +39,13 @@ export default function SearchBar(props) {
           </IconButton>
         </Grid>
         <Grid item xs={11}>
-          <TextField
+        <TextField
             id="search-bar"
             label="Search..."
             fullWidth
             variant="outlined"
             color="secondary"
+            value={query}
             onChange={handleInputChange}
           />
         </Grid>

@@ -32,11 +32,12 @@ function Assignments() {
   };
 
   // fetch assignment data
-  const [assignments, setAssignments] = useState([]);
+  const [assignmentBank, setAssignmentBank] = useState([]);
   useEffect(() => {
     async function fetchData() {
       const res = await trackPromise(assignmentService.getAssignments());
       setAssignments(res.data);
+      setAssignmentBank(res.data);
     }
     fetchData();
   }, []);
@@ -51,15 +52,27 @@ function Assignments() {
     fetchData();
   }, []);
 
+  // search actions
+  const [input, setInput] = useState('');
+  const [assignments, setAssignments] = useState([]);
+
+  const updateInput = async (input) => {
+    const filtered = assignmentBank.filter(assignment => {
+     return assignment.name.toLowerCase().includes(input.toLowerCase())
+    })
+    setInput(input);
+    setAssignments(filtered);
+ }
+
   return (
     <div>
         <Typography  className={classes.paddedItem} variant="h3">
           Assignments
         </Typography>
         
-        <Grid container spacing={2} className={classes.paddedItem} alignItems="center" justify="center">
+        <Grid container spacing={2} className={classes.paddedItem}>
             <Grid item xs={5}>
-            <SearchBar />
+            <SearchBar query={input} setQuery={updateInput}/>
             </Grid>
             <Grid item xs={6}> </Grid>
             <Grid item xs={1}>

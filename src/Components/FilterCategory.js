@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    width: '80%',
+    // width: '100%',
     maxWidth: 1500,
     margin: 'auto',
     paddingBottom: theme.spacing(1.5),
@@ -40,12 +40,16 @@ const useStyles = makeStyles((theme) => ({
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-//for category:
-const categoryFilters = [
-  { title: 'Introduction'  },
-  { title: 'Analysis' },
-  { title: 'Design' },
-  { title: 'Implementation' },
+//filter options
+const filters = [
+  { title: 'Introduction', filterType: 'category' },
+  { title: 'Requirement Engineering', filterType: 'category' },
+  { title: 'Software Design', filterType: 'category' },
+  { title: 'Software Verification', filterType: 'category' },
+  { title: 'Software Maintenance', filterType: 'category' },
+  // { title: 'Easy', filterType: 'difficulty' },
+  // { title: 'Medium', filterType: 'difficulty' },
+  // { title: 'Hard', filterType: 'difficulty' },
 ];
 
 export default function FilterQuestions(props) {
@@ -53,21 +57,12 @@ export default function FilterQuestions(props) {
   const { parentCallback } = props;
 
   const [filter, setFilter] = useState([]);
-  const [sort, setSort] = useState(false);
 
   const setFilterHandler = (event, newFilter) => {
     let filterArray = [];
     newFilter.map((oneFilter) => filterArray.push(oneFilter.title));
     setFilter(filterArray);
-    parentCallback([filterArray, sort]);
-  };
-
-  const setSortHandler = (event) => {
-    if (event.target.value !== sort) {
-      var newSort = event.target.value;
-      setSort(newSort);
-      parentCallback([filter, newSort]);
-    }
+    parentCallback(filterArray);
   };
 
   return (
@@ -78,7 +73,8 @@ export default function FilterQuestions(props) {
           multiple
           onChange={setFilterHandler}
           id="filter-dropdown"
-          options={categoryFilters}
+          options={filters}
+          groupBy={(option) => option.filterType}
           disableCloseOnSelect
           getOptionLabel={(option) => option.title}
           renderOption={(option, { selected }) => (

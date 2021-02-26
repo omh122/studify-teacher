@@ -31,16 +31,29 @@ function Students() {
   };
 
   // fetch student data
-  const [students, setStudents] = useState([]);
+  const [studentBank, setStudentBank] = useState([]);
 
   // fetch data
   useEffect(() => {
     async function fetchData() {
       const res = await trackPromise(studentService.getStudents());
       setStudents(res.data);
+      setStudentBank(res.data);
     }
     fetchData();
   }, []);
+
+  // search actions
+  const [input, setInput] = useState('');
+  const [students, setStudents] = useState([]);
+
+  const updateInput = async (input) => {
+    const filtered = studentBank.filter(student => {
+     return student.name.toLowerCase().includes(input.toLowerCase())
+    })
+    setInput(input);
+    setStudents(filtered);
+ }
 
   return (
     <div>
@@ -48,9 +61,9 @@ function Students() {
           Students
         </Typography>
         
-        <Grid container spacing={2} className={classes.paddedItem} alignItems="center" justify="center">
+        <Grid container spacing={2} className={classes.paddedItem}>
             <Grid item xs={5}>
-            <SearchBar />
+            <SearchBar query={input} setQuery={updateInput}/>
             </Grid>
             <Grid item xs={6}> </Grid>
             <Grid item xs={1}>
