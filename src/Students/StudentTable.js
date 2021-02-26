@@ -29,6 +29,16 @@ const columns = [
     label: 'Tutorial Group',
     minWidth: 100,
   },
+  {
+    id: 'username',
+    label: 'Username',
+    minWidth: 100,
+  },
+  {
+    id: 'password',
+    label: 'Password',
+    minWidth: 100,
+  },
   { id: 'edit_icon', label: ' ' },
   { id: 'delete_icon', label: ' ' },
 ];
@@ -89,6 +99,8 @@ function Row(props) {
       <TableCell>{row.name}</TableCell>
       <TableCell>{row.matricNo}</TableCell>
       <TableCell>{row.tutorialGrp}</TableCell>
+      <TableCell>{row.username}</TableCell>
+      <TableCell>{row.password}</TableCell>
       <TableCell align="right">
         <IconButton aria-label="expand row" size="small" onClick={handleClickEdit}>
           <EditIcon />

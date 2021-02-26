@@ -63,16 +63,16 @@ const DialogContent = withStyles((theme) => ({
 }))(MuiDialogContent);
 
 export default function StudentPopup(props) {
-  const { parentCallback, type } = props;
+  const { parentCallback, type, row } = props;
   const classes = useStyles();
   const history = useHistory();
   const [values, setValues] = useState({
-    name: '',
-    matricNo: '',
-    tutorialGrp: '',
-    username: 'default',
-    password: 'default',
-    id: '',
+    id: typeof row !== 'undefined' ? row._id : '',
+    name: typeof row !== 'undefined' ? row.name : '',
+    matricNo: typeof row !== 'undefined' ? row.matricNo : '',
+    tutorialGrp: typeof row !== 'undefined' ? row.tutorialGrp : '',
+    username: typeof row !== 'undefined' ? row.username : '',
+    password: typeof row !== 'undefined' ? row.password : Math.random().toString(36).substr(2, 8),
   });
 
 
@@ -88,11 +88,18 @@ export default function StudentPopup(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    let username;
+    if (values.username===''){
+      username = values.name.toLowerCase().replace(/\s/g, '');
+    } else {
+      username = values.username
+    }
+
     const newStudent = {
       "name": values.name,
       "matricNo": values.matricNo,
       "tutorialGrp": values.tutorialGrp,
-      "username": values.username,
+      "username": username,
       "password": values.password,
     }
 

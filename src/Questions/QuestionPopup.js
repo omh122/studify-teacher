@@ -192,9 +192,10 @@ export default function QuestionPopup(props) {
                   onChange={handleChange('category')}
                 >
                   <MenuItem value={'Introduction'}>Introduction</MenuItem>
-                  <MenuItem value={'Analysis'}>Analysis</MenuItem>
-                  <MenuItem value={'Design'}>Design</MenuItem>
-                  <MenuItem value={'Implementation'}>Implementation</MenuItem>
+                  <MenuItem value={'Requirement Engineering'}>Requirement Engineering</MenuItem>
+                  <MenuItem value={'Software Design'}>Software Design</MenuItem>
+                  <MenuItem value={'Software Verification'}>Software Verification</MenuItem>
+                  <MenuItem value={'Software Maintenance'}>Software Maintenance</MenuItem>
                 </Select>
               </FormControl>
               </Grid>
