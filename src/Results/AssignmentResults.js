@@ -135,7 +135,7 @@ function AssignmentResults() {
           </Grid>
         </Grid>
         <Grid item xs={9} align='center' justify='center'>
-          {selectedStudent==='' ? <BoxPlot results={scores} assignment={selectedAssignment}/> : <BoxPlotStudent results={scores} assignment={selectedAssignment} studentName={selectedStudent.name} studentResult={selectedStudentResult}/>}    
+          {typeof selectedStudentResult[0]==='undefined' ? <BoxPlot results={scores} assignment={selectedAssignment}/> : <BoxPlotStudent results={scores} assignment={selectedAssignment} studentName={selectedStudent.name} studentResult={selectedStudentResult}/>}    
           <Graph results={wrong} assignment={selectedAssignment}/>
         </Grid>
       </Grid>
