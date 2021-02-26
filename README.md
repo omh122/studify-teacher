@@ -1,6 +1,10 @@
-# Getting Started with Create React App
+# studify web app (frontend) for teachers 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Backend Server
+
+https://github.com/chuanbinp/studifyWebServer
 
 ## Available Scripts
 
