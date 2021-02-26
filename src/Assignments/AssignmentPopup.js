@@ -235,7 +235,7 @@ export default function AssignmentPopup(props) {
           <Button className={classes.actionButton} onClick={handleClose}>
             Cancel
           </Button>
-          <Button className={classes.actionButton} variant="contained" color="secondary" onClick={handleSubmit}>
+          <Button className={classes.actionButton} variant="contained" color="secondary" onClick={handleSubmit} disabled={rightCount!==5}>
             Confirm
           </Button>
         </DialogActions>

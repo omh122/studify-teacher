@@ -13,14 +13,9 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
 import CheckIcon from '@material-ui/icons/Check';
 import Box from '@material-ui/core/Box';
 import QuestionPopup from './QuestionPopup';
-import ConfirmationDialog from '../Components/ConfirmationDialog';
-import questionService from '../services/questions';
-import { trackPromise } from 'react-promise-tracker';
-import { useHistory } from 'react-router-dom';
 
 
 const columns = [
@@ -61,7 +56,6 @@ const useRowStyles = makeStyles({
 
 function Row(props) {
   const { row } = props;
-  const history = useHistory();
   const [open, setOpen] = useState(false);
 
   //edit dialog actions
@@ -72,33 +66,6 @@ function Row(props) {
   const handleCloseEdit = () => {
     setOpenEdit(false);
   };
-
-  //delete dialog actions
-  // const [selectedQn, setSelectedQn] = useState(false);
-  // const handleSelectQn = (question) => {
-  //   setSelectedQn(question);
-  // };
-
-  // const deleteQuestion = async (id) => {
-  //   const res = await trackPromise(
-  //     questionService.deleteQuestion(id)
-  //   );
-  //   if (res.status === 201) {
-  //     history.go(0);
-  //   }
-  // };
-
-  // const [openDelete, setOpenDelete] = useState(false);
-  // const handleClickDelete = (question) => {
-  //   handleSelectQn(question);
-  //   setOpenDelete(true);
-  // };
-  // const handleDialogResult = (continueAction) => {
-  //   setOpenDelete(false);
-  //   if (continueAction) {
-  //     deleteQuestion(selectedQn._id);
-  //   }
-  // };
 
   const classes = useRowStyles();
 

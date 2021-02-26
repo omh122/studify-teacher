@@ -134,25 +134,25 @@ export default function QuestionPopup(props) {
     if (selected1) {
       setAnswer(values.option1);
      } 
-  }, [selected1]);
+  }, [selected1, values.option1]);
 
   useEffect(() => {
     if (selected2) {
       setAnswer(values.option2);
      } 
-  }, [selected2]);
+  }, [selected2, values.option2]);
 
   useEffect(() => {
     if (selected3) {
       setAnswer(values.option3);
      } 
-  }, [selected3]);
+  }, [selected3, values.option3]);
 
   useEffect(() => {
     if (selected4) {
       setAnswer(values.option4);
      } 
-  }, [selected4]);
+  }, [selected4, values.option4]);
 
   return (
     <>

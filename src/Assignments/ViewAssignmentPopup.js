@@ -63,17 +63,8 @@ const DialogContent = withStyles((theme) => ({
   },
 }))(MuiDialogContent);
 
-const useRowStyles = makeStyles({
-  root: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-});
-
 function Row(props) {
   const { row } = props;
-  const classes = useRowStyles();
 
   return (
     <React.Fragment>

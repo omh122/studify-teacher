@@ -34,12 +34,11 @@ function Students() {
   // fetch student data
   const [studentBank, setStudentBank] = useState([]);
 
-  // fetch data
   useEffect(() => {
     async function fetchData() {
       const res = await trackPromise(studentService.getStudents());
-      setStudents(res.data);
-      setStudentBank(res.data);
+      setStudents(res.data.sort((a, b) => (a.name > b.name) ? 1 : -1));
+      setStudentBank(res.data.sort((a, b) => (a.name > b.name) ? 1 : -1));
     }
     fetchData();
   }, []);
