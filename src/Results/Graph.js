@@ -1,26 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 
-function Graph(){
-    const xlabels = ['Requirement Engineering', 'Software Design', 'Software Verification', 'Software Maintenance'];
+function Graph(props){
 
-    const easy = {
-        x: xlabels,
-        y: [8, 6, 4, 7],
-        name: 'Easy',
-        type: 'bar'
-    };
-    const intermediate = {
-        x: xlabels,
-        y: [5, 7, 9, 8],
-        name: 'Medium',
-        type: 'bar'
-    };
+    const { results, assignment } = props;
 
-    const advanced = {
-        x: xlabels,
-        y: [7, 8, 8, 7],
-        name: 'Advanced',
+    function stringDivider(str, width, spaceReplacer) {
+        if (str.length>width) {
+            var p=width
+            for (;p>0 && str[p]!=' ';p--) {
+            }
+            if (p>0) {
+                var left = str.substring(0, p);
+                var right = str.substring(p+1);
+                return left + spaceReplacer + stringDivider(right, width, spaceReplacer);
+            }
+        }
+        return str;
+    }
+
+    const [questions, setQuestions] = useState([]);
+    const [wrongCount, setWrongCount] = useState([]);
+    useEffect(() => {
+        if ( assignment !== false ) {
+            let tempX = [];
+            let tempY = [];
+            for (let i = 0; i < assignment.questions.length; i += 1) {
+                tempX.push(stringDivider((assignment.questions[i].question), 20, '<br>'));
+                if (typeof results[assignment.questions[i]._id]!=='undefined') {
+                    tempY.push(5-results[assignment.questions[i]._id]);
+                } else {
+                    tempY.push(5);
+                    console.log("HII");
+                }
+                
+            }
+            console.log(tempX);
+            console.log(tempY);
+            setQuestions(tempX);
+            setWrongCount(tempY);
+        }  
+    }, [assignment, results]);
+
+
+    const data = {
+        x: questions,
+        y: wrongCount,
+        name: 'Questions',
         type: 'bar'
     };
 
@@ -29,16 +55,17 @@ function Graph(){
       <Plot
         data={[
     
-            easy,
-            intermediate,
-            advanced
+            data
         
         ]}
         layout={ {
-            barmode:'group', 
-            title: "Chuan Bin's Statistics",
+            title: "Question Statistics",
             width: 600,
-            height: 400
+            height: 300,
+            xaxis: {
+                automargin: true,
+                tickangle: 0,
+            },
         } }
       />
       );

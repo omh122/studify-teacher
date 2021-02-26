@@ -30,13 +30,16 @@ for (let i = 0; i < test_data.length; i += 1) {
   assignments.push(createData(...test_data[i]));
 }
 
-function Home() {
+function SelectAssignment(props) {
   const classes = useStyles();
+
+  const { assignments, parentCallback } = props;
 
   const [assignment, setAssignment] = useState('');
 
   const handleChange = (event) => {
     setAssignment(event.target.value);
+    parentCallback(event.target.value);
   };
 
   return (
@@ -50,7 +53,7 @@ function Home() {
             onChange={handleChange}
         >
             {assignments.map((option) => (
-              <MenuItem value={option.name}>{option.name}</MenuItem>
+              <MenuItem value={option}>{option.name}</MenuItem>
             ))}
         </Select>
         </FormControl>
@@ -58,4 +61,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default SelectAssignment;

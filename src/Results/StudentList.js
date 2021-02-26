@@ -22,30 +22,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const test_data = [
-    ['Wong Xiaoqing', 'U1822123C', 'SSP1'],
-    ['Ooi Min Hui', 'U1822023F', 'SSP2'],
-    ['Phoe Chuan Bin', 'U1822345A', 'SSP3'],
-    ['Chen Gangzhe', 'U1822146B', 'SSP4'],
-    ['Deng Jinyang', 'U1822143D', 'SSP1'],
-    ['Wong Wei Jie', 'U1822423E', 'SSP2'],
-    ['Derry Tan', 'U1822521A', 'SSP3'],
-    ['Ng Jiayu', 'U1822301A', 'SSP4'],
-    ['Tan Tan', 'U1821002C', 'SSP1'],
-    ['Milky', 'U1821922D', 'SSP2'],
-    ['Boki', 'U1820141A', 'SSP3'],
-  ];
-
-function createData(name, id, group) {
-    return { name, id, group };
-}
-
-const students = []
-
-for (let i = 0; i < test_data.length; i += 1) {
-    students.push(createData(...test_data[i]));
-}
-
 export default function StudentList() {
   const classes = useStyles();
   const [selectedIndex, setSelectedIndex] = useState('');

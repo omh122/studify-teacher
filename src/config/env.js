@@ -9,6 +9,7 @@ const envConfig = {
     assignments: 'assignments',
     students: 'students',
     resources: 'resources',
+    assignmentResults: 'assignmentResults',
   },
 };
 
