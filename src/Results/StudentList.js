@@ -22,15 +22,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function StudentList() {
+export default function StudentList(props) {
   const classes = useStyles();
+
+  const { parentCallback } = props;
+
   const [selectedIndex, setSelectedIndex] = useState('');
 
   const handleListItemClick = (event, index) => {
     if (selectedIndex===index) {
         setSelectedIndex('');
+        parentCallback('');
     } else {
         setSelectedIndex(index);
+        parentCallback(index);
     }
     
   };
@@ -70,13 +75,13 @@ export default function StudentList() {
               {filterGroup.length === 0 ? 
                 studentBank.map((student) => {
                 return (
-                    <ListItem button key={student.matricNo} selected={selectedIndex === student.matricNo} onClick={(event) => handleListItemClick(event, student.matricNo)} >
+                    <ListItem button key={student.matricNo} selected={selectedIndex === student} onClick={(event) => handleListItemClick(event, student)} >
                     <ListItemText id={student.matricNo} primary={student.name} secondary={student.matricNo + '    ' + student.tutorialGrp}/>
                     </ListItem>
                 );}) : 
                 studentBank.filter((student) => filterGroup.includes(student.tutorialGrp)).map((student) => {
                 return (
-                    <ListItem button key={student.matricNo} selected={selectedIndex === student.matricNo} onClick={(event) => handleListItemClick(event, student.matricNo)} >
+                    <ListItem button key={student.matricNo} selected={selectedIndex === student} onClick={(event) => handleListItemClick(event, student)} >
                     <ListItemText id={student.matricNo} primary={student.name} secondary={student.matricNo + '    ' + student.tutorialGrp}/>
                     </ListItem>
                 );

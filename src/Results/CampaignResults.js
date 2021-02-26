@@ -20,7 +20,7 @@ function Home() {
           <StudentList />
         </Grid>
         <Grid item xs={9} align='center' justify='center'>
-          <Graph />
+          {/* <Graph /> */}
         </Grid>
       </Grid>
     </div>

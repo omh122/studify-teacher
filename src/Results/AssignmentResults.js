@@ -4,6 +4,7 @@ import SelectAssignment from './SelectAssignment';
 import Grid from '@material-ui/core/Grid';
 import StudentList from './StudentList';
 import BoxPlot from './BoxPlot';
+import BoxPlotStudent from './BoxPlotStudent';
 import Graph from './Graph';
 import assignmentService from '../services/assignments';
 import assignmentResultService from '../services/assignmentResults';
@@ -107,6 +108,21 @@ function AssignmentResults() {
     setWrong(tempWrong);
   }, [selectedResults]);
   
+  // selecting student
+  const [selectedStudent, setSelectedStudent] = useState('');
+
+  function setStudent(value) {
+    setSelectedStudent(value);
+  }
+
+  // indiv student result of selected assignment
+  const [selectedStudentResult, setSelectedStudentResult] = useState('');
+
+  useEffect(() => {
+    if (selectedAssignment !== false && selectedStudent !== '') {
+      setSelectedStudentResult(selectedResults.filter((res) => selectedStudent._id.includes(res.userId)))
+    } 
+  }, [selectedStudent, selectedAssignment]);
 
   return (
     <div>
@@ -115,11 +131,11 @@ function AssignmentResults() {
           <Grid continaer>
             <Grid item xs={12} className={classes.paddedBottom}><SelectAssignment assignments={assignments} parentCallback={setAssignment}/></Grid>
             <Grid item xs={12}></Grid>
-            <Grid item xs={12}><StudentList /></Grid>
+            <Grid item xs={12}><StudentList parentCallback={setStudent} /></Grid>
           </Grid>
         </Grid>
         <Grid item xs={9} align='center' justify='center'>
-          <BoxPlot results={scores} assignment={selectedAssignment}/>
+          {selectedStudent==='' ? <BoxPlot results={scores} assignment={selectedAssignment}/> : <BoxPlotStudent results={scores} assignment={selectedAssignment} studentName={selectedStudent.name} studentResult={selectedStudentResult}/>}    
           <Graph results={wrong} assignment={selectedAssignment}/>
         </Grid>
       </Grid>

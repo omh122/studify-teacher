@@ -3,7 +3,7 @@ import Plot from 'react-plotly.js';
 
 function BoxPlot(props){
 
-    const { results, assignment } = props;
+    const { results, assignment, studentName, studentResult } = props;
 
     const scores = {
         x: results,
@@ -14,6 +14,16 @@ function BoxPlot(props){
         boxmean: true,
         name: typeof assignment === 'undefined' ? '' : assignment.name // pass in name
       };
+
+    const student = {
+        name: studentName,
+        y: typeof assignment === 'undefined' ? '' : [assignment.name],
+        x: [studentResult[0].score],
+        text: studentName,
+        marker: {
+          size: 20
+        } 
+    }
       
 
 
@@ -22,6 +32,7 @@ function BoxPlot(props){
         data={[
     
             scores,
+            student
         
         ]}
 
