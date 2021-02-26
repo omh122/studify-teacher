@@ -9,6 +9,7 @@ import AddIcon from '@material-ui/icons/Add';
 import StudentPopup from './StudentPopup';
 import studentService from '../services/students';
 import { trackPromise } from 'react-promise-tracker';
+import FilterStudents from '../Components/FilterStudents';
 
 const useStyles = makeStyles((theme) => ({
   paddedItem: {
@@ -43,6 +44,13 @@ function Students() {
     fetchData();
   }, []);
 
+  // filter actions
+  const [filterGroup, setFilterGroup] = useState([]);
+
+  function setFilterViewsGroup(settingsData) {
+    setFilterGroup(settingsData);
+  }
+
   // search actions
   const [input, setInput] = useState('');
   const [students, setStudents] = useState([]);
@@ -65,14 +73,15 @@ function Students() {
             <Grid item xs={5}>
             <SearchBar query={input} setQuery={updateInput}/>
             </Grid>
-            <Grid item xs={6}> </Grid>
+            <Grid item xs={4}><FilterStudents parentCallback={setFilterViewsGroup}/></Grid>
+            <Grid item xs={2}></Grid>
             <Grid item xs={1}>
             <Fab aria-label="add" onClick={handleClickOpen}>
               <AddIcon />
             </Fab>
             </Grid>
             <Grid item xs={12}>
-            <StudentTable students={students}/>
+            <StudentTable students={filterGroup.length === 0 ? students : students.filter((student) => filterGroup.includes(student.tutorialGrp))}/>
             </Grid>
         </Grid>
 

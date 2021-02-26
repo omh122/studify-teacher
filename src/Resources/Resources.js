@@ -24,17 +24,6 @@ function Resources() {
 
   const [open, setOpen] = useState(false);
 
-  const [filterCat, setFilterCat] = useState([]);
-  const [filterDiff, setFilterDiff] = useState([]);
-
-  function setFilterViewsCat(settingsData) {
-    setFilterCat(settingsData);
-  }
-
-  function setFilterViewsDiff(settingsData) {
-    setFilterDiff(settingsData);
-  }
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -52,6 +41,18 @@ function Resources() {
     }
     fetchData();
   }, []);
+
+  // filter actions
+  const [filterCat, setFilterCat] = useState([]);
+  const [filterDiff, setFilterDiff] = useState([]);
+
+  function setFilterViewsCat(settingsData) {
+    setFilterCat(settingsData);
+  }
+
+  function setFilterViewsDiff(settingsData) {
+    setFilterDiff(settingsData);
+  }
 
   // search actions
   const [input, setInput] = useState('');

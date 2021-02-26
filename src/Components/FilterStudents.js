@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     maxWidth: 1800,
     margin: 'auto',
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1.5),
   },
   text: {
     // padding: theme.spacing(2),
@@ -48,7 +48,7 @@ const filters = [
   { title: 'SSP4' },
 ];
 
-export default function FilterQuestions(props) {
+export default function FilterStudents(props) {
   const classes = useStyles();
   const { parentCallback } = props;
 
@@ -58,7 +58,7 @@ export default function FilterQuestions(props) {
     let filterArray = [];
     newFilter.map((oneFilter) => filterArray.push(oneFilter.title));
     setFilter(filterArray);
-    parentCallback([filterArray]);
+    parentCallback(filterArray);
   };
 
   return (

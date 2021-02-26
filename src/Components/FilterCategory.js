@@ -9,8 +9,8 @@ import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    // width: '100%',
-    maxWidth: 1500,
+    width: '100%',
+    maxWidth: 1800,
     margin: 'auto',
     paddingBottom: theme.spacing(1.5),
   },
@@ -42,14 +42,11 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 //filter options
 const filters = [
-  { title: 'Introduction', filterType: 'category' },
-  { title: 'Requirement Engineering', filterType: 'category' },
-  { title: 'Software Design', filterType: 'category' },
-  { title: 'Software Verification', filterType: 'category' },
-  { title: 'Software Maintenance', filterType: 'category' },
-  // { title: 'Easy', filterType: 'difficulty' },
-  // { title: 'Medium', filterType: 'difficulty' },
-  // { title: 'Hard', filterType: 'difficulty' },
+  { title: 'Introduction' },
+  { title: 'Requirement Engineering' },
+  { title: 'Software Design' },
+  { title: 'Software Verification' },
+  { title: 'Software Maintenance' },
 ];
 
 export default function FilterQuestions(props) {
@@ -74,7 +71,6 @@ export default function FilterQuestions(props) {
           onChange={setFilterHandler}
           id="filter-dropdown"
           options={filters}
-          groupBy={(option) => option.filterType}
           disableCloseOnSelect
           getOptionLabel={(option) => option.title}
           renderOption={(option, { selected }) => (
@@ -88,14 +84,14 @@ export default function FilterQuestions(props) {
               {option.title}
             </React.Fragment>
           )}
-          style={{ width: '70%' }}
+          style={{ width: '80%' }}
           // fullWidth
           renderInput={(params) => (
             <TextField
               {...params}
               variant="outlined"
               label="Category"
-                placeholder="Select category(s)"
+              placeholder="Select category(s)"
               color="secondary"
             />
           )}

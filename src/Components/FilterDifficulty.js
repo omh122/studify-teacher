@@ -9,8 +9,8 @@ import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    // width: '100%',
-    maxWidth: 1500,
+    width: '100%',
+    maxWidth: 1800,
     margin: 'auto',
     paddingBottom: theme.spacing(1.5),
   },
@@ -82,7 +82,7 @@ export default function FilterQuestions(props) {
               {option.title}
             </React.Fragment>
           )}
-          style={{ width: '70%' }}
+          style={{ width: '80%' }}
           // fullWidth
           renderInput={(params) => (
             <TextField
