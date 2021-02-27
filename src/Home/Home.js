@@ -18,7 +18,7 @@ function Home() {
 
   return (
     <div>
-      <Slide direction="right" in={true} mountOnEnter timeout={1000}>
+      <Slide direction="down" in={true} mountOnEnter timeout={1500}>
         <Grid container
                 spacing={0}
                 direction="column"
@@ -35,7 +35,7 @@ function Home() {
             </Grid> */}
           </Grid>
         </Slide>
-        <Slide direction="left" in={true} mountOnEnter timeout={1500}>
+        <Slide direction="up" in={true} mountOnEnter timeout={1500}>
           <Grid container
                 spacing={0}
                 direction="column"
