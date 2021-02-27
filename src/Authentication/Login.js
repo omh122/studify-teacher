@@ -131,7 +131,13 @@ export default function LoginDialog() {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-                  <Button variant="contained" onClick={handleClose} disabled={values.username===''|values.password===''}>Login</Button>
+                  <Button 
+                    variant="contained" 
+                    onClick={handleClose} 
+                    // disabled={values.username===''|values.password===''}
+                    >
+                      Login
+                  </Button>
                 </Grid>
               </Grid>
             </Paper>
