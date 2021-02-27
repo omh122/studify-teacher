@@ -14,6 +14,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ShareIcon from '@material-ui/icons/Share';
 import ViewAssignmentPopup from './ViewAssignmentPopup';
 import AssignmentPopup from './AssignmentPopup';
+import AssignmentSharePopup from './AssignmentSharePopup';
 import ConfirmationDialog from '../Components/ConfirmationDialog';
 import assignmentService from '../services/assignments';
 import { trackPromise } from 'react-promise-tracker';
@@ -93,6 +94,25 @@ function Row(props) {
      }
    };
 
+   // share dialog
+   const [openShare, setOpenShare] = useState(false);
+   const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClickShare = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  useEffect(() => {
+    if (anchorEl!==null){
+      setOpenShare(true);
+    }
+  }, [anchorEl]);
+
+  const handleCloseShare = () => {
+    setAnchorEl(null);
+    setOpenShare(false);
+  };
+
   return (
     <React.Fragment>
     <TableRow hover role="checkbox" tabIndex={-1} key={row._id} >
@@ -130,10 +150,19 @@ function Row(props) {
         />
       )}
       <TableCell align="right">
-        <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+        <IconButton aria-label="expand row" size="small" onClick={handleClickShare}>
           <ShareIcon />
         </IconButton>
       </TableCell>
+      {openShare && (
+        <AssignmentSharePopup
+          //callback
+          parentCallback={handleCloseShare}
+          type="edit"
+          assignment={row}
+          anchorEl={anchorEl}
+        />
+        )}
     </TableRow>
     </React.Fragment>
   )
