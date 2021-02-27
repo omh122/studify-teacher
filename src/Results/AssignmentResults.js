@@ -5,7 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import StudentList from './StudentList';
 import BoxPlot from './BoxPlot';
 import BoxPlotStudent from './BoxPlotStudent';
-import Graph from './Graph';
+import QuestionStats from './QuestionStats';
+import QuestionStatsStudent from './QuestionStatsStudent';
 import assignmentService from '../services/assignments';
 import assignmentResultService from '../services/assignmentResults';
 import { trackPromise } from 'react-promise-tracker';
@@ -135,8 +136,12 @@ function AssignmentResults() {
           </Grid>
         </Grid>
         <Grid item xs={9} align='center' justify='center'>
-          {typeof selectedStudentResult[0]==='undefined' ? <BoxPlot results={scores} assignment={selectedAssignment}/> : <BoxPlotStudent results={scores} assignment={selectedAssignment} studentName={selectedStudent.name} studentResult={selectedStudentResult}/>}    
-          <Graph results={wrong} assignment={selectedAssignment}/>
+          {typeof selectedStudentResult[0]==='undefined' || selectedStudent==='' ? 
+            <BoxPlot results={scores} assignment={selectedAssignment}/> 
+            : <BoxPlotStudent results={scores} assignment={selectedAssignment} studentName={selectedStudent.name} studentResult={selectedStudentResult}/>}    
+          {typeof selectedStudentResult[0]==='undefined' || selectedStudent==='' ? 
+            <QuestionStats results={wrong} assignment={selectedAssignment} totalStudents={selectedResults.length}/> 
+            : <QuestionStatsStudent results={selectedStudentResult} assignment={selectedAssignment} studentName={selectedStudent.name}/>}
         </Grid>
       </Grid>
     </div>

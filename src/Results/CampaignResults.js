@@ -1,5 +1,5 @@
 import React from 'react';
-import Graph from './Graph';
+import QuestionStats from './QuestionStats';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import StudentList from './StudentList';
@@ -20,7 +20,7 @@ function Home() {
           <StudentList />
         </Grid>
         <Grid item xs={9} align='center' justify='center'>
-          {/* <Graph /> */}
+          {/* <QuestionStats /> */}
         </Grid>
       </Grid>
     </div>

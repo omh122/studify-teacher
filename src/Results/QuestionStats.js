@@ -3,7 +3,7 @@ import Plot from 'react-plotly.js';
 
 function Graph(props){
 
-    const { results, assignment } = props;
+    const { results, assignment, totalStudents } = props;
 
     function stringDivider(str, width, spaceReplacer) {
         if (str.length>width) {
@@ -28,15 +28,12 @@ function Graph(props){
             for (let i = 0; i < assignment.questions.length; i += 1) {
                 tempX.push(stringDivider((assignment.questions[i].question), 20, '<br>'));
                 if (typeof results[assignment.questions[i]._id]!=='undefined') {
-                    tempY.push(5-results[assignment.questions[i]._id]);
+                    tempY.push(totalStudents-results[assignment.questions[i]._id]);
                 } else {
-                    tempY.push(5);
-                    console.log("HII");
+                    tempY.push(totalStudents);
                 }
                 
             }
-            console.log(tempX);
-            console.log(tempY);
             setQuestions(tempX);
             setWrongCount(tempY);
         }  
