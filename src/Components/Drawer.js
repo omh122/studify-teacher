@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
@@ -17,14 +18,17 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import Button from '@material-ui/core/Button';
 import Hidden from '@material-ui/core/Hidden';
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Link, Redirect } from 'react-router-dom';
 
 import Home from '../Home/Home';
+import Login from '../Authentication/Login';
 import Results from '../Results/Results';
 import Questions from '../Questions/Questions';
 import Assignments from '../Assignments/Assignments';
 import Students from '../Students/Students';
 import Resources from '../Resources/Resources';
+
+import ConfirmationDialog from './ConfirmationDialog';
 
 const drawerWidth = 240;
 
@@ -102,7 +106,7 @@ export default function PersistentDrawerRight() {
     const navItems = [
         {
             text:"Home",
-            route:"/"
+            route:"/home"
         },
         {
             text:"Results",
@@ -128,7 +132,7 @@ export default function PersistentDrawerRight() {
     ];
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -138,6 +142,16 @@ export default function PersistentDrawerRight() {
     setOpen(false);
   };
 
+  // logout actions
+  const [openLogout, setOpenLogout] = useState(false);
+
+  const handleLogout = () => {
+    setOpenLogout(true);
+  };
+
+  const handleLogoutConfirmation = () => {
+    setOpenLogout(false);
+  };
 
   return (
     <BrowserRouter>
@@ -162,6 +176,9 @@ export default function PersistentDrawerRight() {
                     ))}
                 </div>
             </Hidden>
+            <IconButton onClick={handleLogout}>
+              <PowerSettingsNewIcon style={{ color: '#FFFFFF' }}/>
+            </IconButton>
             
             <Hidden mdUp>
                 <IconButton
@@ -176,6 +193,12 @@ export default function PersistentDrawerRight() {
             </Hidden>
          </Toolbar>
       </AppBar>
+
+      {openLogout && <ConfirmationDialog  
+        title={"Log out"}
+        content={"Confirm log out? You will be returned to the login screen."}
+        parentCallback={handleLogoutConfirmation} 
+        type='logout'/>}
       
       <main
         className={clsx(classes.content, {
@@ -183,11 +206,12 @@ export default function PersistentDrawerRight() {
         })}
       >
         <div className={classes.drawerHeader} />
-
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
-            <Route exact path="/" component={Home}/>
+            <Route exact path="/" render={() => <Redirect to="/login" />}/>
+            <Route exact path="/login" component={Login}/>
+            <Route exact path="/home" component={Home}/>
             <Route path="/studentresults/:resultsTab" component={Results}/>
             <Route path="/questionbank" component={Questions}/>
             <Route path="/assignments" component={Assignments}/>
@@ -217,6 +241,7 @@ export default function PersistentDrawerRight() {
                 <ListItemText primary={item.text} />
                 </ListItem>
             ))}
+
         </List>
       </Drawer>
     </div>

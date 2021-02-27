@@ -5,9 +5,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { useHistory } from 'react-router-dom';
 
 export default function ConfirmationDialog(props) {
-  const { title, content, parentCallback } = props;
+  const { title, content, parentCallback, type } = props;
 
   //TO USE, include the following the your component:
   //   const [open, setOpen] = useState(false);
@@ -33,7 +34,12 @@ export default function ConfirmationDialog(props) {
     parentCallback(false);
   };
 
+  const history = useHistory();
+
   const handleConfirm = () => {
+    if (type==='logout') {
+      history.push('/login');
+    }
     parentCallback(true);
   };
 
