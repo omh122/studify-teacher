@@ -2,9 +2,6 @@ import { axiosConfig } from '../config/axiosConfig';
 import config from '../config/env';
 const baseUrl = config.endpoints.assignments;
 
-/**
- * @param {string} _id - id of the workshop the user signed up for
- */
 
 const getAssignments = async () => {
   try {

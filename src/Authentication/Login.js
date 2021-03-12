@@ -16,6 +16,8 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import clsx from 'clsx';
+import teacherService from '../services/teachers';
+import { trackPromise } from 'react-promise-tracker';
 
 const useStyles = makeStyles((theme) => ({
   paddedItem: {
@@ -53,6 +55,27 @@ export default function LoginDialog() {
     history.push('/home');
   };
 
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    const loginDetails = {
+      "username": values.username,
+      "password": values.password,
+    }
+
+    let res;
+
+    res = await trackPromise(teacherService.login(loginDetails));
+
+    console.log(res.status);
+    if (res.status === 201) {
+      handleClose();
+    } else {
+      alert(res.data.message);
+    }
+
+  };
+
   const handleClose = () => {
     setOpen(false);
     redirect();
@@ -81,69 +104,69 @@ export default function LoginDialog() {
       <Dialog fullScreen open={open} TransitionComponent={Transition}>
         <DialogContent className={classes.root}>
           <Grid container
-                spacing={0}
-                direction="column"
-                alignItems="center"
-                justify="center"
-                display='flex'
-                style={{ minHeight: '90vh' }}
-               >
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justify="center"
+            display='flex'
+            style={{ minHeight: '90vh' }}
+          >
             <Grid item xs={12} className={classes.whiteText} ><Typography variant="h1">Studify</Typography></Grid>
             <Grid item xs={12} className={classes.whiteText} ><Typography variant="h5">for teachers</Typography></Grid>
             <Grid item xs={12} className={classes.paddedItem}>
-            <Paper className={classes.paper}>
-              <Grid container spacing={3} align='center' justify='center'>
-                <Grid item xs={12}>
-                </Grid>
-                <Grid item xs={12} >
-                  <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-                    <InputLabel htmlFor="username">Username</InputLabel>
-                    <OutlinedInput
-                      id="outlined-adornment-password"
-                      value={values.username}
-                      onChange={handleChange('username')}
-                      labelWidth={70}
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} >
-                  <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-                    <InputLabel htmlFor="password">Password</InputLabel>
-                    <OutlinedInput
-                      id="outlined-adornment-password"
-                      type={values.showPassword ? 'text' : 'password'}
-                      value={values.password}
-                      onChange={handleChange('password')}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                      labelWidth={70}
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                  <Button 
-                    variant="contained" 
-                    onClick={handleClose} 
-                    // disabled={values.username===''|values.password===''}
+              <Paper className={classes.paper}>
+                <Grid container spacing={3} align='center' justify='center'>
+                  <Grid item xs={12}>
+                  </Grid>
+                  <Grid item xs={12} >
+                    <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+                      <InputLabel htmlFor="username">Username</InputLabel>
+                      <OutlinedInput
+                        id="outlined-adornment-password"
+                        value={values.username}
+                        onChange={handleChange('username')}
+                        labelWidth={70}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} >
+                    <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+                      <InputLabel htmlFor="password">Password</InputLabel>
+                      <OutlinedInput
+                        id="outlined-adornment-password"
+                        type={values.showPassword ? 'text' : 'password'}
+                        value={values.password}
+                        onChange={handleChange('password')}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              edge="end"
+                            >
+                              {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                          </InputAdornment>
+                        }
+                        labelWidth={70}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button
+                      variant="contained"
+                      onClick={handleLogin}
+                      disabled={values.username === '' | values.password === ''}
                     >
                       Login
                   </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Paper>
+              </Paper>
             </Grid>
           </Grid>
-          
+
         </DialogContent>
 
       </Dialog>
