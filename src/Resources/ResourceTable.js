@@ -30,11 +30,11 @@ const columns = [
     label: 'Category',
     minWidth: 100,
   },
-  {
-    id: 'difficulty',
-    label: 'Difficulty',
-    minWidth: 100,
-  },
+  // {
+  //   id: 'difficulty',
+  //   label: 'Difficulty',
+  //   minWidth: 100,
+  // },
   {
     id: 'url',
     label: 'URL',
@@ -78,7 +78,7 @@ function Row(props) {
   // delete dialog actions
   const [selected, setSelected] = useState(false);
   const handleSelect = (resource) => {
-   setSelected(resource);
+    setSelected(resource);
   };
 
   const deleteResource = async (id) => {
@@ -92,7 +92,7 @@ function Row(props) {
 
   const [openDelete, setOpenDelete] = useState(false);
   const handleClickDelete = (resource) => {
-   handleSelect(resource);
+    handleSelect(resource);
     setOpenDelete(true);
   };
   const handleDialogResult = (continueAction) => {
@@ -105,60 +105,60 @@ function Row(props) {
 
   return (
     <React.Fragment>
-    <TableRow tabIndex={-1} key={row.i} >
-      <TableCell>
-        <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-          {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-        </IconButton>
-      </TableCell>
-      <TableCell>{row.name}</TableCell>
-      <TableCell>{row.category}</TableCell>
-      <TableCell>{row.difficulty}</TableCell>
-      <TableCell>{row.url}</TableCell>
-      <TableCell align="right">
-        <IconButton aria-label="expand row" size="small" onClick={handleClickEdit}>
-          <EditIcon />
-        </IconButton>
-      </TableCell>
-      {openEdit && (
-        <ResourcePopup
-          //callback
-          parentCallback={handleCloseEdit}
-          type="edit"
-          row={row}
-        />
-      )}
-      <TableCell align="right">
-        <IconButton aria-label="expand row" size="small" onClick={()=>handleClickDelete(row)}>
-          <DeleteIcon />
-        </IconButton>
-      </TableCell>
-      {openDelete && (
-        <ConfirmationDialog
-          //callback
-          title={"Delete Resource"}
-          content={"Confirm deletion of this resource? This action cannot be undone."}
-          parentCallback={handleDialogResult}
-        />
-      )}
-    </TableRow>
-    <TableRow className={classes.root}>
-      <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={2}> 
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <Box marginLeft={16} margin={1}>
-            <Table size="small" aria-label="purchases">
-              <TableBody>
-                <TableRow key={row.i} className={classes.root}>
-                <TableCell component="th" scope="row">
-                    <ResponsivePlayer url={row.url} />
-                </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>  
-          </Box>
-        </Collapse>
-      </TableCell>
-    </TableRow>
+      <TableRow tabIndex={-1} key={row.i} >
+        <TableCell>
+          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </TableCell>
+        <TableCell>{row.name}</TableCell>
+        <TableCell>{row.category}</TableCell>
+        {/* <TableCell>{row.difficulty}</TableCell> */}
+        <TableCell>{row.url}</TableCell>
+        <TableCell align="right">
+          <IconButton aria-label="expand row" size="small" onClick={handleClickEdit}>
+            <EditIcon />
+          </IconButton>
+        </TableCell>
+        {openEdit && (
+          <ResourcePopup
+            //callback
+            parentCallback={handleCloseEdit}
+            type="edit"
+            row={row}
+          />
+        )}
+        <TableCell align="right">
+          <IconButton aria-label="expand row" size="small" onClick={() => handleClickDelete(row)}>
+            <DeleteIcon />
+          </IconButton>
+        </TableCell>
+        {openDelete && (
+          <ConfirmationDialog
+            //callback
+            title={"Delete Resource"}
+            content={"Confirm deletion of this resource? This action cannot be undone."}
+            parentCallback={handleDialogResult}
+          />
+        )}
+      </TableRow>
+      <TableRow className={classes.root}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={2}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box marginLeft={16} margin={1}>
+              <Table size="small" aria-label="purchases">
+                <TableBody>
+                  <TableRow key={row.i} className={classes.root}>
+                    <TableCell component="th" scope="row">
+                      <ResponsivePlayer url={row.url} />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>
     </React.Fragment>
   )
 };
@@ -188,10 +188,11 @@ export default function ResourceTable(props) {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth,
-                           backgroundColor: '#A3A152',
-                           color: "#fff"      
-                         }}
+                  style={{
+                    minWidth: column.minWidth,
+                    backgroundColor: '#A3A152',
+                    color: "#fff"
+                  }}
                 >
                   {column.label}
                 </TableCell>

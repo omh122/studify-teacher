@@ -20,7 +20,7 @@ const test_data = [
   ['5', 100, 71.4285, 14.2857, 28.5714, 0],
   ['6', 85.714, 42.8571, 14.2857, 28.5714, 28.5714],
   ['7', 100, 28.5714, 28.5714, 14.2857, 28.5714],
-  ['8', 100, 71.4285, 28.5714, 0, 0],
+  ['8', 100, 100, 28.5714, 0, 0],
 ];
 
 function createData(studentId, intro, re, sd, sm, sv) {
@@ -63,12 +63,16 @@ function CampaignResults() {
     setSM(tempSM);
   }, [results])
 
+  function setStudent(value) {
+    //todo
+  }
+
 
   return (
     <div>
       <Grid container spacing={3} className={classes.paddedItem}>
         <Grid item xs={3}>
-          <StudentList />
+          <StudentList parentCallback={setStudent} />
         </Grid>
         <Grid item xs={9} align='center' justify='center'>
           <BoxPlotCampaign intro={intro} re={re} sd={sd} sv={sv} sm={sm} />

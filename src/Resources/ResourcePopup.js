@@ -71,7 +71,7 @@ export default function ResourcePopup(props) {
     id: typeof row !== 'undefined' ? row._id : '',
     name: typeof row !== 'undefined' ? row.name : '',
     category: typeof row !== 'undefined' ? row.category : '',
-    difficulty: typeof row !== 'undefined' ? row.difficulty : '',
+    // difficulty: typeof row !== 'undefined' ? row.difficulty : '',
     url: typeof row !== 'undefined' ? row.url : '',
   });
 
@@ -90,7 +90,7 @@ export default function ResourcePopup(props) {
     const newResource = {
       "name": values.name,
       "category": values.category,
-      "difficulty": values.difficulty,
+      // "difficulty": values.difficulty,
       "url": values.url,
     }
 
@@ -107,7 +107,7 @@ export default function ResourcePopup(props) {
     } else {
       alert("Error :(");
     }
-    
+
   };
 
   return (
@@ -126,8 +126,8 @@ export default function ResourcePopup(props) {
           {type === 'add' ? 'Add New Resource' : 'Edit Resource'}
         </DialogTitle>
         <DialogContent dividers>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
               <FormControl fullWidth className={classes.form} variant="outlined">
                 <InputLabel htmlFor="name-input">Name</InputLabel>
                 <Input
@@ -137,8 +137,8 @@ export default function ResourcePopup(props) {
                   labelWidth={60}
                 />
               </FormControl>
-              </Grid>
-              <Grid item xs={6}>
+            </Grid>
+            <Grid item xs={12}>
               <FormControl fullWidth className={classes.form}>
                 <InputLabel id="demo-simple-select-label">Category</InputLabel>
                 <Select
@@ -148,13 +148,14 @@ export default function ResourcePopup(props) {
                   onChange={handleChange('category')}
                 >
                   <MenuItem value={'Introduction'}>Introduction</MenuItem>
-                  <MenuItem value={'Analysis'}>Analysis</MenuItem>
-                  <MenuItem value={'Design'}>Design</MenuItem>
-                  <MenuItem value={'Implementation'}>Implementation</MenuItem>
+                  <MenuItem value={'Requirement Engineering'}>Requirement Engineering</MenuItem>
+                  <MenuItem value={'Software Design'}>Software Design</MenuItem>
+                  <MenuItem value={'Software Verification'}>Software Verification</MenuItem>
+                  <MenuItem value={'Software Maintenance'}>Software Maintenance</MenuItem>
                 </Select>
               </FormControl>
-              </Grid>
-              <Grid item xs={6}>
+            </Grid>
+            {/* <Grid item xs={6}>
               <FormControl fullWidth className={classes.form}>
                 <InputLabel id="demo-simple-select-label">Difficulty</InputLabel>
                 <Select
@@ -168,8 +169,8 @@ export default function ResourcePopup(props) {
                   <MenuItem value={'Hard'}>Hard</MenuItem>
                 </Select>
               </FormControl>
-              </Grid>
-              <Grid item xs={12}>
+              </Grid> */}
+            <Grid item xs={12}>
               <FormControl fullWidth className={classes.form} variant="outlined">
                 <InputLabel htmlFor="question-input">URL</InputLabel>
                 <Input
@@ -179,8 +180,8 @@ export default function ResourcePopup(props) {
                   labelWidth={60}
                 />
               </FormControl>
-              </Grid>
-            </Grid>  
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button className={classes.actionButton} onClick={handleClose}>
