@@ -64,7 +64,7 @@ function Graph(props) {
                     automargin: true,
                     tickangle: 0,
                 },
-                yaxis: { range: [0, 5] },
+                yaxis: { range: [0, 1] },
             }}
         />
     );

@@ -10,6 +10,7 @@ const envConfig = {
     students: 'students',
     resources: 'resources',
     assignmentResults: 'assignmentResults',
+    campaignResults: 'campaignResults',
     teachers: 'teachers',
   },
 };

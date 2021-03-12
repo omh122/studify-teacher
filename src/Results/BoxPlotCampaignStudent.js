@@ -3,7 +3,7 @@ import Plot from 'react-plotly.js';
 
 function BoxPlot(props) {
 
-    const { intro, re, sd, sv, sm } = props;
+    const { intro, re, sd, sv, sm, studentName, studentResult } = props;
 
     const scoresIntro = {
         x: intro,
@@ -12,7 +12,7 @@ function BoxPlot(props) {
         jitter: 0.5,
         pointpos: 0,
         boxmean: true,
-        name: 'Introduction'
+        name: 'Introduction',
     };
 
     const scoresRE = {
@@ -55,6 +55,61 @@ function BoxPlot(props) {
         name: 'Software Maintenance'
     };
 
+    const studentIntro = {
+        name: studentName,
+        y: ['Introduction'],
+        x: [studentResult[0].introScore],
+        text: studentName,
+        marker: {
+            size: 20
+        },
+        showlegend: false,
+    };
+
+    const studentRE = {
+        name: studentName,
+        y: ['Requirement Engineering'],
+        x: [studentResult[0].reScore],
+        text: studentName,
+        marker: {
+            size: 20
+        },
+        showlegend: false,
+    };
+
+    const studentSD = {
+        name: studentName,
+        y: ['Software Design'],
+        x: [studentResult[0].sdScore],
+        text: studentName,
+        marker: {
+            size: 20
+        },
+        showlegend: false,
+    };
+
+    const studentSV = {
+        name: studentName,
+        y: ['Software Verification'],
+        x: [studentResult[0].svScore],
+        text: studentName,
+        marker: {
+            size: 20
+        },
+        showlegend: false,
+    };
+
+    const studentSM = {
+        name: studentName,
+        y: ['Software Maintenance'],
+        x: [studentResult[0].smScore],
+        text: studentName,
+        marker: {
+            size: 20
+        },
+        showlegend: false,
+    };
+
     return (
         <Plot
             data={[
@@ -63,7 +118,12 @@ function BoxPlot(props) {
                 scoresSV,
                 scoresSD,
                 scoresRE,
-                scoresIntro
+                scoresIntro,
+                studentIntro,
+                studentRE,
+                studentSD,
+                studentSV,
+                studentSM
 
 
             ]}

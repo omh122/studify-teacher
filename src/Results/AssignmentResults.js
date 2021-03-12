@@ -22,26 +22,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const test_data = [
-  ['1', '1', '4', ['1']],
-  ['2', '1', '3', ['1', '2']],
-  ['3', '1', '2', ['1', '2', '3']],
-  ['4', '1', '0', ['1', '2', '3', '4', '5']],
-  ['5', '1', '4', ['2']],
-  ['6', '1', '3', ['1', '2']],
-  ['7', '1', '5', []],
-  ['8', '1', '1', ['1', '2', '4', '5']],
-];
+// const test_data = [
+//   ['1', '1', '4', ['1']],
+//   ['2', '1', '3', ['1', '2']],
+//   ['3', '1', '2', ['1', '2', '3']],
+//   ['4', '1', '0', ['1', '2', '3', '4', '5']],
+//   ['5', '1', '4', ['2']],
+//   ['6', '1', '3', ['1', '2']],
+//   ['7', '1', '5', []],
+//   ['8', '1', '1', ['1', '2', '4', '5']],
+// ];
 
-function createData(studentId, assignmentId, score, wrongqns) {
-  return { studentId, assignmentId, score, wrongqns };
-}
+// function createData(studentId, assignmentId, score, wrongqns) {
+//   return { studentId, assignmentId, score, wrongqns };
+// }
 
-const results = []
+// const results = []
 
-for (let i = 0; i < test_data.length; i += 1) {
-  results.push(createData(...test_data[i]));
-}
+// for (let i = 0; i < test_data.length; i += 1) {
+//   results.push(createData(...test_data[i]));
+// }
 
 function AssignmentResults() {
   const classes = useStyles();
@@ -93,12 +93,12 @@ function AssignmentResults() {
   const [wrong, setWrong] = useState({});
 
   useEffect(() => {
-    let tempScores=[];
-    let tempWrong={};
+    let tempScores = [];
+    let tempWrong = {};
     for (let i = 0; i < selectedResults.length; i += 1) {
       tempScores.push(parseInt(selectedResults[i].score, 10));
-      for (let j = 0; j < selectedResults[i].wrongQuestionIds.length; j+= 1) {
-        if (tempWrong[selectedResults[i].wrongQuestionIds[j]]==null){
+      for (let j = 0; j < selectedResults[i].wrongQuestionIds.length; j += 1) {
+        if (tempWrong[selectedResults[i].wrongQuestionIds[j]] == null) {
           tempWrong[selectedResults[i].wrongQuestionIds[j]] = 1;
         } else {
           tempWrong[selectedResults[i].wrongQuestionIds[j]]++;
@@ -108,7 +108,7 @@ function AssignmentResults() {
     setScores(tempScores);
     setWrong(tempWrong);
   }, [selectedResults]);
-  
+
   // selecting student
   const [selectedStudent, setSelectedStudent] = useState('');
 
@@ -122,7 +122,7 @@ function AssignmentResults() {
   useEffect(() => {
     if (selectedAssignment !== false && selectedStudent !== '') {
       setSelectedStudentResult(selectedResults.filter((res) => selectedStudent._id.includes(res.userId)))
-    } 
+    }
   }, [selectedStudent, selectedAssignment]);
 
   return (
@@ -130,18 +130,18 @@ function AssignmentResults() {
       <Grid container spacing={3} className={classes.paddedItem}>
         <Grid item xs={3}>
           <Grid continaer>
-            <Grid item xs={12} className={classes.paddedBottom}><SelectAssignment assignments={assignments} parentCallback={setAssignment}/></Grid>
+            <Grid item xs={12} className={classes.paddedBottom}><SelectAssignment assignments={assignments} parentCallback={setAssignment} /></Grid>
             <Grid item xs={12}></Grid>
             <Grid item xs={12}><StudentList parentCallback={setStudent} /></Grid>
           </Grid>
         </Grid>
         <Grid item xs={9} align='center' justify='center'>
-          {typeof selectedStudentResult[0]==='undefined' || selectedStudent==='' ? 
-            <BoxPlot results={scores} assignment={selectedAssignment}/> 
-            : <BoxPlotStudent results={scores} assignment={selectedAssignment} studentName={selectedStudent.name} studentResult={selectedStudentResult}/>}    
-          {typeof selectedStudentResult[0]==='undefined' || selectedStudent==='' ? 
-            <QuestionStats results={wrong} assignment={selectedAssignment} totalStudents={selectedResults.length}/> 
-            : <QuestionStatsStudent results={selectedStudentResult} assignment={selectedAssignment} studentName={selectedStudent.name}/>}
+          {typeof selectedStudentResult[0] === 'undefined' || selectedStudent === '' ?
+            <BoxPlot results={scores} assignment={selectedAssignment} />
+            : <BoxPlotStudent results={scores} assignment={selectedAssignment} studentName={selectedStudent.name} studentResult={selectedStudentResult} />}
+          {typeof selectedStudentResult[0] === 'undefined' || selectedStudent === '' ?
+            <QuestionStats results={wrong} assignment={selectedAssignment} totalStudents={selectedResults.length} />
+            : <QuestionStatsStudent results={selectedStudentResult} assignment={selectedAssignment} studentName={selectedStudent.name} />}
         </Grid>
       </Grid>
     </div>
