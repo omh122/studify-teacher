@@ -7,7 +7,7 @@ const getAssignments = async () => {
   try {
     const res = await axiosConfig({
       method: 'get',
-      url: `${baseUrl}/`,
+      url: `${baseUrl}/assignmentsonly`,
     });
     return res;
   } catch (err) {

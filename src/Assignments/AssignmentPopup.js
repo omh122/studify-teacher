@@ -68,7 +68,7 @@ const DialogContent = withStyles((theme) => ({
 
 // question list function
 function not(a, b) {
-    return a.filter((value) => JSON.stringify(b).indexOf(JSON.stringify(value)) === -1);
+  return a.filter((value) => JSON.stringify(b).indexOf(JSON.stringify(value)) === -1);
 }
 
 export default function AssignmentPopup(props) {
@@ -116,6 +116,7 @@ export default function AssignmentPopup(props) {
     const newAssignment = {
       "name": name,
       "questionIds": questionids,
+      "assignmentType": "assignment",
     }
 
     let res;
@@ -131,14 +132,14 @@ export default function AssignmentPopup(props) {
     } else {
       alert("Error :(");
     }
-    
+
   };
 
   // list of questions
   const [right, setRight] = useState(
     typeof assignment !== 'undefined' ? assignment.questions : []
   );
-  const [left, setLeft] = useState(    
+  const [left, setLeft] = useState(
     typeof assignment !== 'undefined' ? not(questionbank, assignment.questions) : questionbank
   );
 
@@ -147,19 +148,19 @@ export default function AssignmentPopup(props) {
     typeof assignment !== 'undefined' ? assignment.questions.length : 0
   );
   const qnCount = 5;
-  
+
   const handleRight = (value) => {
     if (rightCount < qnCount) {
       setRight(right.concat([value]));
       setLeft(not(left, [value]));
-      setRightCount(rightCount+1);
+      setRightCount(rightCount + 1);
     } // insert snackbar if max hit?
   };
 
   const handleLeft = (value) => {
     setLeft(left.concat([value]));
     setRight(not(right, [value]));
-    setRightCount(rightCount-1);
+    setRightCount(rightCount - 1);
   };
 
   const customList = (items, type) => (
@@ -168,11 +169,13 @@ export default function AssignmentPopup(props) {
         {items.map((value) => {
           const labelId = `transfer-list-item-${value}-label`;
           return (
-            <ListItem key={value.i} role="listitem" button onClick={()=>{if(type==='left'){
-                                                                            handleRight(value);
-                                                                        } else {
-                                                                            handleLeft(value);
-                                                                        }}}>
+            <ListItem key={value.i} role="listitem" button onClick={() => {
+              if (type === 'left') {
+                handleRight(value);
+              } else {
+                handleLeft(value);
+              }
+            }}>
               <ListItemText id={labelId} primary={value.question} />
             </ListItem>
           );
@@ -195,47 +198,47 @@ export default function AssignmentPopup(props) {
         marginBottom="5"
       >
         <DialogTitle id="assignmentPopup">
-            {type === 'add' ? 'Add New Assignment' : 'Edit Assignment'}
+          {type === 'add' ? 'Add New Assignment' : 'Edit Assignment'}
         </DialogTitle>
         <DialogContent dividers>
-        <Grid container spacing={3} justify="center" alignItems="center" className={classes.root}>
-        <Grid item xs={5}>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel htmlFor="name-input">Assignment Name</InputLabel>
-            <Input id="name-input" value={name} onChange={handleChange} labelWidth={60}/>
-          </FormControl>
-        </Grid>
-        <Grid item xs={7}></Grid>
-        <Grid item xs={6}>
-            <Typography variant="h6"> <b>Question Bank</b></Typography>
-        </Grid>
-        <Grid item xs={6}>
-            <Typography variant="h6"> <b>Assignment Questions</b></Typography>
-        </Grid>
-        <Grid item xs={6} className={classes.filter}>
-          <FilterCategory parentCallback={setFilterViewsCat}/>
-          <FilterDifficulty parentCallback={setFilterViewsDiff}/>
-        </Grid>
-        <Grid item xs={6}>
-            <Typography paragraph className={classes.para}> Click on the questions on the left to add to the assignment. To remove, click on the question on the right.</Typography>
-            <Typography style={{display: 'flex', justifyContent: 'flex-end', paddingRight: 50}}><br/>{rightCount}/{qnCount} selected</Typography>
-        </Grid>
-        <Grid item xs={6}>{
-          filterDiff.length === 0 ? 
-            filterCat.length === 0 ? 
-              customList(left, 'left') :  customList(left.filter((question) => filterCat.includes(question.category)), 'left') : 
-              filterCat.length === 0 ? 
-            customList(left.filter((question) => filterDiff.includes(question.difficulty)), 'left') : 
-          customList(left.filter((question) => filterCat.includes(question.category) && filterDiff.includes(question.difficulty)) , 'left')
-       }</Grid>
-        <Grid item xs={6}>{customList(right, 'right')}</Grid>
-        </Grid>
+          <Grid container spacing={3} justify="center" alignItems="center" className={classes.root}>
+            <Grid item xs={5}>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel htmlFor="name-input">Assignment Name</InputLabel>
+                <Input id="name-input" value={name} onChange={handleChange} labelWidth={60} />
+              </FormControl>
+            </Grid>
+            <Grid item xs={7}></Grid>
+            <Grid item xs={6}>
+              <Typography variant="h6"> <b>Question Bank</b></Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="h6"> <b>Assignment Questions</b></Typography>
+            </Grid>
+            <Grid item xs={6} className={classes.filter}>
+              <FilterCategory parentCallback={setFilterViewsCat} />
+              <FilterDifficulty parentCallback={setFilterViewsDiff} />
+            </Grid>
+            <Grid item xs={6}>
+              <Typography paragraph className={classes.para}> Click on the questions on the left to add to the assignment. To remove, click on the question on the right.</Typography>
+              <Typography style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: 50 }}><br />{rightCount}/{qnCount} selected</Typography>
+            </Grid>
+            <Grid item xs={6}>{
+              filterDiff.length === 0 ?
+                filterCat.length === 0 ?
+                  customList(left, 'left') : customList(left.filter((question) => filterCat.includes(question.category)), 'left') :
+                filterCat.length === 0 ?
+                  customList(left.filter((question) => filterDiff.includes(question.difficulty)), 'left') :
+                  customList(left.filter((question) => filterCat.includes(question.category) && filterDiff.includes(question.difficulty)), 'left')
+            }</Grid>
+            <Grid item xs={6}>{customList(right, 'right')}</Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button className={classes.actionButton} onClick={handleClose}>
             Cancel
           </Button>
-          <Button className={classes.actionButton} variant="contained" color="secondary" onClick={handleSubmit} disabled={rightCount!==5}>
+          <Button className={classes.actionButton} variant="contained" color="secondary" onClick={handleSubmit} disabled={rightCount !== 5}>
             Confirm
           </Button>
         </DialogActions>
