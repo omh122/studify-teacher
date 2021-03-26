@@ -140,10 +140,11 @@ export default function ResourcePopup(props) {
             </Grid>
             <Grid item xs={12}>
               <FormControl fullWidth className={classes.form}>
-                <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                <InputLabel id="selectCat">Category</InputLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
+                  data-testid="selectCat"
+                  labelId="selectCat"
+                  id="selectCat"
                   value={values.category}
                   onChange={handleChange('category')}
                 >
