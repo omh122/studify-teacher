@@ -89,7 +89,7 @@ export default function StudentPopup(props) {
     event.preventDefault();
 
     let username;
-    if (values.username===''){
+    if (values.username === '') {
       username = values.name.toLowerCase().replace(/\s/g, '');
     } else {
       username = values.username
@@ -116,7 +116,7 @@ export default function StudentPopup(props) {
     } else {
       alert("Error :(");
     }
-    
+
   };
 
   return (
@@ -134,19 +134,20 @@ export default function StudentPopup(props) {
           {type === 'add' ? 'Add New Student' : 'Edit Student Details'}
         </DialogTitle>
         <DialogContent dividers>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
               <FormControl fullWidth className={classes.form} variant="outlined">
                 <InputLabel htmlFor="question-input">Student Name</InputLabel>
                 <Input
+                  data-testid="studentName"
                   id="name-input"
                   value={values.name}
                   onChange={handleChange('name')}
                   labelWidth={60}
                 />
               </FormControl>
-              </Grid>
-              <Grid item xs={12}>
+            </Grid>
+            <Grid item xs={12}>
               <FormControl fullWidth className={classes.form} variant="outlined">
                 <InputLabel htmlFor="question-input">Matric Number</InputLabel>
                 <Input
@@ -156,8 +157,8 @@ export default function StudentPopup(props) {
                   labelWidth={60}
                 />
               </FormControl>
-              </Grid>
-              <Grid item xs={12}>
+            </Grid>
+            <Grid item xs={12}>
               <FormControl fullWidth className={classes.form}>
                 <InputLabel id="demo-simple-select-label">Tutorial Group</InputLabel>
                 <Select
@@ -172,8 +173,8 @@ export default function StudentPopup(props) {
                   <MenuItem value={'SSP4'}>SSP4</MenuItem>
                 </Select>
               </FormControl>
-              </Grid>
             </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button className={classes.actionButton} onClick={handleClose}>

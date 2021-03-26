@@ -6,7 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles((theme) => ({
-  paddedItem:{
+  paddedItem: {
     padding: theme.spacing(3),
   },
   textField: {
@@ -15,10 +15,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const test_data = [
-    [0, 'Assignment 1', [0, 1, 2]],
-    [1, 'Assignment 2', [0, 2, 1]],
-    [2, 'Assignment 3', [2, 1, 0]],
-  ];
+  [0, 'Assignment 1', [0, 1, 2]],
+  [1, 'Assignment 2', [0, 2, 1]],
+  [2, 'Assignment 3', [2, 1, 0]],
+];
 
 function createData(i, name, questions) {
   return { i, name, questions };
@@ -44,19 +44,19 @@ function SelectAssignment(props) {
 
   return (
     <div className={classes.paddedItem}>
-        <FormControl>
+      <FormControl>
         <InputLabel className={classes.textField} id="demo-simple-select-label">Select Assignment</InputLabel>
         <Select className={classes.textField}
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={assignment}
-            onChange={handleChange}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={assignment}
+          onChange={handleChange}
         >
-            {assignments.map((option) => (
-              <MenuItem value={option}>{option.name}</MenuItem>
-            ))}
+          {assignments.map((option) => (
+            <MenuItem value={option}>{option.name}</MenuItem>
+          ))}
         </Select>
-        </FormControl>
+      </FormControl>
     </div>
   );
 }

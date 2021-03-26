@@ -100,7 +100,7 @@ export default function LoginDialog() {
   };
 
   return (
-    <div>
+    <div value={'login'}>
       <Dialog fullScreen open={open} TransitionComponent={Transition}>
         <DialogContent className={classes.root}>
           <Grid container
@@ -118,11 +118,12 @@ export default function LoginDialog() {
                 <Grid container spacing={3} align='center' justify='center'>
                   <Grid item xs={12}>
                   </Grid>
+                  {/* <form> */}
                   <Grid item xs={12} >
                     <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
                       <InputLabel htmlFor="username">Username</InputLabel>
                       <OutlinedInput
-                        id="outlined-adornment-password"
+                        id="username"
                         value={values.username}
                         onChange={handleChange('username')}
                         labelWidth={70}
@@ -133,7 +134,7 @@ export default function LoginDialog() {
                     <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
                       <InputLabel htmlFor="password">Password</InputLabel>
                       <OutlinedInput
-                        id="outlined-adornment-password"
+                        id="password"
                         type={values.showPassword ? 'text' : 'password'}
                         value={values.password}
                         onChange={handleChange('password')}
@@ -155,13 +156,15 @@ export default function LoginDialog() {
                   </Grid>
                   <Grid item xs={12}>
                     <Button
+                      id="login"
                       variant="contained"
                       onClick={handleLogin}
                       disabled={values.username === '' | values.password === ''}
                     >
                       Login
-                  </Button>
+                    </Button>
                   </Grid>
+                  {/* </form> */}
                 </Grid>
               </Paper>
             </Grid>
