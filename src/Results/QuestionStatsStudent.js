@@ -27,7 +27,7 @@ function Graph(props) {
             let tempX = [];
             let tempY = [];
             for (let i = 0; i < assignment.questions.length; i += 1) {
-                tempX.push(stringDivider((assignment.questions[i].question), 20, '<br>'));
+                tempX.push(stringDivider((assignment.questions[i].question), 10, '<br>'));
                 if (results[0].wrongQuestionIds.includes(assignment.questions[i]._id)) {
                     tempY.push(0);
                 } else {
