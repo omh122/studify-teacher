@@ -58,7 +58,7 @@ function Graph(props) {
             ]}
             layout={{
                 title: studentName,
-                width: 600,
+                width: 750,
                 height: 300,
                 xaxis: {
                     automargin: true,
