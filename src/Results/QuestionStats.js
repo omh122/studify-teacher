@@ -57,12 +57,13 @@ function Graph(props) {
             ]}
             layout={{
                 title: "Question Statistics",
-                width: 600,
+                width: 750,
                 height: 300,
                 xaxis: {
                     automargin: true,
                     tickangle: 0,
                 },
+                yaxis: { range: [0, totalStudents] },
             }}
         />
     );
